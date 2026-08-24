@@ -40,8 +40,17 @@ button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-b
 <div id="modal" class="modal"><div class="modal-box"><h2>Add product</h2><input id="pn" placeholder="Product name"><input id="pc" placeholder="Category"><input id="pp" type="number" placeholder="Price"><select id="pm"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select><input id="ps" type="number" placeholder="Stock"><button class="pill" onclick="saveProduct()">Save product</button> <button class="ghost" onclick="closeProduct()">Cancel</button></div></div>
 
 <script>
-const defaults=[["Cyber Nova","Anime Figures",2199,12],["Moonblade Sentinel","Statues",3499,7],["Neon Ronin","Anime Figures",1899,18],["Void Mage Bust","Busts",2799,5],["Pocket Mecha","Miniatures",899,26],["Astral Knight","Statues",4299,4],["Custom Model","Custom Models",0,0],["Chibi Guardian","Miniatures",1299,15]];
-let products=JSON.parse(localStorage.getItem("craftLayerProducts")||"null")||defaults.map(x=>({name:x[0],cat:x[1],price:x[2],currency:"INR",stock:x[3]}));
+const defaults=[
+["Cyber Nova","Anime Figures",2199,12,""],
+["Moonblade Sentinel","Statues",3499,7,""],
+["Neon Ronin","Anime Figures",1899,18,""],
+["Void Mage Bust","Busts",2799,5,""],
+["Pocket Mecha","Miniatures",899,26,""],
+["Astral Knight","Statues",4299,4,""],
+["Custom Model","Custom Models",0,0,""],
+["Chibi Guardian","Miniatures",1299,15,""]
+];
+let products=JSON.parse(localStorage.getItem("craftLayerProducts")||"null")||defaults.map(x=>({name:x[0],cat:x[1],price:x[2],currency:"INR",stock:x[3],image:x[4]}));
 let bag=Number(localStorage.getItem("craftLayerBag")||0);
 function money(p){return new Intl.NumberFormat("en-IN",{style:"currency",currency:p.currency||"INR",maximumFractionDigits:0}).format(p.price)}
 function render(filter="All"){let cats=["All",...new Set(products.map(p=>p.cat))];filters.innerHTML=cats.map(c=>`<button class="filter ${c===filter?"active":""}" onclick="render('${c.replaceAll("'","")}')">${c}</button>`).join("");let list=filter==="All"?products:products.filter(p=>p.cat===filter);document.getElementById("products").innerHTML=list.map((p,i)=>`<article class="card"><div class="art"><span class="tag">${p.cat}</span><div class="shape"></div></div><div class="info"><small>${p.stock>0?"IN STOCK":"MADE TO ORDER"}</small><h3>${p.name}</h3><p>Premium 3D collectible · ${p.cat}</p><div class="price"><b>${p.price?money(p):"Custom"}</b><button class="buy" onclick="addBag()">Add</button></div></div></article>`).join("")}
