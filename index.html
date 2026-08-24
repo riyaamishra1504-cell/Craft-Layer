@@ -40,7 +40,12 @@ let bag=Number(localStorage.getItem("craftLayerBag")||0);
 function money(p){return new Intl.NumberFormat("en-IN",{style:"currency",currency:p.currency||"INR",maximumFractionDigits:0}).format(p.price)}
 function render(filter="All"){let cats=["All",...new Set(products.map(p=>p.cat))];filters.innerHTML=cats.map(c=>`<button class="filter ${c===filter?"active":""}" onclick="render('${c.replaceAll("'","")}')">${c}</button>`).join("");let list=filter==="All"?products:products.filter(p=>p.cat===filter);document.getElementById("products").innerHTML=list.map((p,i)=>`<article class="card"><div class="art"><span class="tag">${p.cat}</span><div class="shape"></div></div><div class="info"><small>${p.stock>0?"IN STOCK":"MADE TO ORDER"}</small><h3>${p.name}</h3><p>Premium 3D collectible · ${p.cat}</p><div class="price"><b>${p.price?money(p):"Custom"}</b><button class="buy" onclick="addBag()">Add</button></div></div></article>`).join("")}
 function addBag(){bag++;localStorage.setItem("craftLayerBag",bag);document.getElementById("bag").textContent=bag}
-function showCart(){alert(bag?`Your bag has ${bag} item${bag>1?"s":""}.`:"Your bag is empty.")}
+function showCart(){
+  const message = bag
+    ? `Your bag has ${bag} item${bag > 1 ? "s" : ""}.`
+    : "Your bag is empty.";
+  alert(message);
+}
 function scrollShop(){document.getElementById("shop").scrollIntoView({behavior:"smooth"})}
 function openAdmin(){store.style.display="none";admin.style.display="block";renderAdmin()}
 function closeAdmin(){admin.style.display="none";store.style.display="block"}
