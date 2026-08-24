@@ -37,7 +37,7 @@ button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-b
 </div>
 <div id="admin" class="admin"><div class="admin-layout"><aside><div class="logo">CRAFT <span>LAYER</span><small style="display:block;color:#777;margin-top:4px">MERCHANT</small></div><p>Overview</p><p>Products</p><p>Orders</p><p>Inventory</p><p>Customers</p><p>Collections</p><p>Coupons</p><p>Payments</p><p>Shipping</p><p>Analytics</p><button class="ghost" onclick="closeAdmin()">← Storefront</button></aside><main><div class="admin-tools"><div><small>MERCHANT CONSOLE</small><h1>Store overview</h1></div><button class="pill" onclick="openProduct()">+ Add product</button></div><div class="admin-grid"><div class="stat"><small>Revenue</small><strong>₹0</strong></div><div class="stat"><small>Products</small><strong id="count">0</strong></div><div class="stat"><small>Orders</small><strong>0</strong></div><div class="stat"><small>Low stock</small><strong id="low">0</strong></div></div><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody id="adminProducts"></tbody></table></main></div></div>
 
-<div id="modal" class="modal"><div class="modal-box"><h2>Add product</h2><input id="pn" placeholder="Product name"><input id="pc" placeholder="Category"><input id="pp" type="number" placeholder="Price"><select id="pm"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select><input id="ps" type="number" placeholder="Stock"><button class="pill" onclick="saveProduct()">Save product</button> <button class="ghost" onclick="closeProduct()">Cancel</button></div></div>
+<div id="modal" class="modal"><div class="modal-box"><h2>Add product</h2><input id="pn" placeholder="Product name"><input id="pc" placeholder="Category"><input id="pp" type="number" placeholder="Price"><select id="pm"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select><input id="ps" type="number" placeholder="Stock"><input id="pi" placeholder="Product image URL"><button class="pill" onclick="saveProduct()">Save product</button> <button class="ghost" onclick="closeProduct()">Cancel</button></div></div>
 
 <script>
 const defaults=[
@@ -76,7 +76,7 @@ function openAdmin(){store.style.display="none";admin.style.display="block";rend
 function closeAdmin(){admin.style.display="none";store.style.display="block"}
 function renderAdmin(){count.textContent=products.length;low.textContent=products.filter(p=>p.stock>0&&p.stock<=5).length;adminProducts.innerHTML=products.map((p,i)=>`<tr><td><b>${p.name}</b></td><td>${p.cat}</td><td>${p.price?money(p):"Custom"}</td><td>${p.stock}</td><td><button class="ghost" onclick="delProduct(${i})">Delete</button></td></tr>`).join("")}
 function openProduct(){modal.style.display="grid"}function closeProduct(){modal.style.display="none"}
-function saveProduct(){products.push({name:pn.value||"Untitled Model",cat:pc.value||"Collectibles",price:Number(pp.value)||0,currency:pm.value,stock:Number(ps.value)||0});localStorage.setItem("craftLayerProducts",JSON.stringify(products));closeProduct();renderAdmin();render()}
+function saveProduct(){products.push({name:pn.value||"Untitled Model",cat:pc.value||"Collectibles",price:Number(pp.value)||0,currency:pm.value,stock:Number(ps.value)||0,image:pi.value||""});
 function delProduct(i){products.splice(i,1);localStorage.setItem("craftLayerProducts",JSON.stringify(products));renderAdmin();render()}
 document.getElementById("bag").textContent=bag;render();
 </script>
