@@ -75,7 +75,7 @@ function openAdmin(){store.style.display="none";admin.style.display="block";rend
 function closeAdmin(){admin.style.display="none";store.style.display="block"}
 function renderAdmin(){count.textContent=products.length;low.textContent=products.filter(p=>p.stock>0&&p.stock<=5).length;adminProducts.innerHTML=products.map((p,i)=>`<tr><td><b>${p.name}</b></td><td>${p.cat}</td><td>${p.price?money(p):"Custom"}</td><td>${p.stock}</td><td><button class="ghost" onclick="delProduct(${i})">Delete</button></td></tr>`).join("")}
 function openProduct(){modal.style.display="grid"}function closeProduct(){modal.style.display="none"}
-function saveProduct(){products.push({name:pn.value||"Untitled Model",cat:pc.value||"Collectibles",price:Number(pp.value)||0,currency:pm.value,stock:Number(ps.value)||0,image:pi.value||""});
+function saveProduct(){products.push({name:pn.value||"Untitled Model",cat:pc.value||"Collectibles",price:Number(pp.value)||0,currency:pm.value,stock:Number(ps.value)||0,image:pi.value||""});localStorage.setItem("craftLayerProducts",JSON.stringify(products));closeProduct();renderAdmin();render()}
 function delProduct(i){products.splice(i,1);localStorage.setItem("craftLayerProducts",JSON.stringify(products));renderAdmin();render()}
 document.getElementById("bag").textContent=bag;render();
 </script>
