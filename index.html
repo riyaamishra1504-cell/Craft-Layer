@@ -124,6 +124,30 @@ function changeQty(id, change){
 
   showCart();
 }
+function removeFromCart(id){
+  let cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+
+  cart = cart.filter(item => item.id !== id);
+
+  localStorage.setItem("craftLayerCart", JSON.stringify(cart));
+
+  bag = cart.reduce((total, item) => total + item.quantity, 0);
+  localStorage.setItem("craftLayerBag", bag);
+
+  document.getElementById("bag").textContent = bag;
+
+  showCart();
+}
+
+function clearCart(){
+  localStorage.removeItem("craftLayerCart");
+  localStorage.removeItem("craftLayerBag");
+
+  bag = 0;
+  document.getElementById("bag").textContent = bag;
+
+  showCart();
+}
 function showCart(){
   const panel = document.getElementById("cartPanel");
   const content = document.getElementById("cartContent");
@@ -151,9 +175,12 @@ function showCart(){
                 <p>₹${Number(item.price || 0).toLocaleString("en-IN")}</p>
 
                 <div style="display:flex;align-items:center;gap:10px;">
-                  <button class="pill" onclick="changeQty('${item.id}',-1)">−</button>
-                  <span>Quantity: ${item.quantity}</span>
-                  <button class="pill" onclick="changeQty('${item.id}',1)">+</button>
+  <button class="pill" onclick="changeQty('${item.id}',-1)">−</button>
+  <span>Quantity: ${item.quantity}</span>
+  <button class="pill" onclick="changeQty('${item.id}',1)">+</button>
+</div>
+
+<button class="pill" onclick="removeFromCart('${item.id}')">Remove</button>
                 </div>
               </div>
             </div>
@@ -162,10 +189,10 @@ function showCart(){
       </div>
 
       <hr>
+<h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
 
-      <h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
-
-      <button class="pill" onclick="closeCart()">Continue shopping</button>
+<button class="pill" onclick="clearCart()">Clear Bag</button>
+<button class="pill" onclick="closeCart()">Continue shopping</button>
     `;
   }
 
