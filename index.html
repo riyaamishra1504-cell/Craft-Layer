@@ -82,11 +82,41 @@ function showCart(){
   const panel = document.getElementById("cartPanel");
   const content = document.getElementById("cartContent");
 
-  content.innerHTML = bag
-    ? `<p>You have <strong>${bag}</strong> item${bag > 1 ? "s" : ""} in your bag.</p>
-       <button class="pill" onclick="closeCart()">Continue shopping</button>`
-    : `<p>Your bag is empty.</p>
-       <button class="pill" onclick="closeCart()">Continue shopping</button>`;
+  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+
+  if(!cart.length){
+    content.innerHTML = `
+      <p>Your bag is empty.</p>
+      <button class="pill" onclick="closeCart()">Continue shopping</button>
+    `;
+  }else{
+    let total = 0;
+
+    content.innerHTML = `
+      <div class="cart-items">
+        ${cart.map(item => {
+          total += Number(item.price || 0) * item.quantity;
+
+          return `
+            <div class="cart-item">
+              <img src="${item.image || ''}" alt="${item.name}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+              <div>
+                <strong>${item.name}</strong>
+                <p>₹${Number(item.price || 0).toLocaleString("en-IN")}</p>
+                <p>Quantity: ${item.quantity}</p>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+
+      <hr>
+
+      <h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
+
+      <button class="pill" onclick="closeCart()">Continue shopping</button>
+    `;
+  }
 
   panel.style.transform = "translateX(0)";
 }
