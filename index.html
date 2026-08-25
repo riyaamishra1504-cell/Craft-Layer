@@ -192,13 +192,63 @@ function showCart(){
 <h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
 
 <button class="pill" onclick="clearCart()">Clear Bag</button>
+<button class="pill" onclick="showCheckout()">Checkout</button>
 <button class="pill" onclick="closeCart()">Continue shopping</button>
     `;
   }
 
   panel.style.transform = "translateX(0)";
 }
+function showCheckout(){
+  const panel = document.getElementById("cartPanel");
+  const content = document.getElementById("cartContent");
 
+  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+
+  if(!cart.length){
+    content.innerHTML = `
+      <p>Your bag is empty.</p>
+      <button class="pill" onclick="closeCart()">Continue shopping</button>
+    `;
+    return;
+  }
+
+  let total = 0;
+
+  cart.forEach(item => {
+    total += Number(item.price || 0) * item.quantity;
+  });
+
+  content.innerHTML = `
+    <h2>Checkout</h2>
+
+    <form onsubmit="placeOrder(event)">
+      <input id="customerName" required placeholder="Full Name">
+      <input id="customerEmail" type="email" required placeholder="Email">
+      <input id="customerPhone" required placeholder="Phone Number">
+
+      <input id="customerAddress" required placeholder="Address">
+      <input id="customerCity" required placeholder="City">
+      <input id="customerState" required placeholder="State">
+      <input id="customerPin" required placeholder="PIN Code">
+
+      <select id="paymentMethod" required>
+        <option value="">Select Payment Method</option>
+        <option value="COD">Cash on Delivery</option>
+        <option value="Razorpay">Razorpay</option>
+        <option value="Paytm">Paytm</option>
+        <option value="PayPal">PayPal</option>
+      </select>
+
+      <h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
+
+      <button class="pill" type="submit">Place Order</button>
+      <button class="pill" type="button" onclick="showCart()">Back to Bag</button>
+    </form>
+  `;
+
+  panel.style.transform = "translateX(0)";
+}
 function closeCart(){
   document.getElementById("cartPanel").style.transform = "translateX(100%)";
 }
