@@ -51,7 +51,29 @@ const defaults=[
 ["Custom Model","Custom Models",0,0,""],
 ["Chibi Guardian","Miniatures",1299,15,""]
 ];
-let products=JSON.parse(localStorage.getItem("craftLayerProducts")||"null")||defaults.map((x,i)=>({
+let savedProducts = JSON.parse(localStorage.getItem("craftLayerProducts") || "null");
+
+let products = savedProducts
+  ? savedProducts.map((p,i) => ({
+      id: p.id || "product-" + i,
+      name: p.name,
+      cat: p.cat,
+      price: p.price,
+      currency: p.currency || "INR",
+      stock: p.stock,
+      image: p.image || ""
+    }))
+  : defaults.map((x,i) => ({
+      id: "product-" + i,
+      name: x[0],
+      cat: x[1],
+      price: x[2],
+      currency: "INR",
+      stock: x[3],
+      image: x[4]
+    }));
+
+localStorage.setItem("craftLayerProducts", JSON.stringify(products));
   id:"product-"+i,
   name:x[0],
   cat:x[1],
