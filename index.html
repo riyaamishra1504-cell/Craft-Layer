@@ -249,6 +249,59 @@ function showCheckout(){
 
   panel.style.transform = "translateX(0)";
 }
+function placeOrder(event){
+  event.preventDefault();
+
+  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+
+  if(!cart.length){
+    alert("Your bag is empty.");
+    return;
+  }
+
+  const order = {
+    id: "CL-" + Date.now(),
+    customer: {
+      name: document.getElementById("customerName").value,
+      email: document.getElementById("customerEmail").value,
+      phone: document.getElementById("customerPhone").value,
+      address: document.getElementById("customerAddress").value,
+      city: document.getElementById("customerCity").value,
+      state: document.getElementById("customerState").value,
+      pin: document.getElementById("customerPin").value
+    },
+    paymentMethod: document.getElementById("paymentMethod").value,
+    items: cart,
+    createdAt: new Date().toISOString()
+  };
+
+  order.total = cart.reduce(
+    (sum,item) => sum + Number(item.price || 0) * item.quantity,
+    0
+  );
+
+  const orders = JSON.parse(localStorage.getItem("craftLayerOrders") || "[]");
+
+  orders.push(order);
+
+  localStorage.setItem("craftLayerOrders", JSON.stringify(orders));
+
+  localStorage.removeItem("craftLayerCart");
+  localStorage.removeItem("craftLayerBag");
+
+  bag = 0;
+  document.getElementById("bag").textContent = "0";
+
+  content = document.getElementById("cartContent");
+
+  content.innerHTML = `
+    <h2>Order Placed 🎉</h2>
+    <p>Order ID: <strong>${order.id}</strong></p>
+    <p>Thank you, ${order.customer.name}!</p>
+    <p>Total: <strong>₹${order.total.toLocaleString("en-IN")}</strong></p>
+    <button class="pill" onclick="closeCart()">Continue Shopping</button>
+  `;
+}
 function closeCart(){
   document.getElementById("cartPanel").style.transform = "translateX(100%)";
 }
