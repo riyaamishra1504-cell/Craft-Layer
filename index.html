@@ -54,53 +54,7 @@ button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-b
   <button class="admin-menu" onclick="showAdminSection('analytics')">Analytics</button>
 
   <button class="ghost" onclick="closeAdmin()">← Storefront</button>
-async function showAdminOrders(){
-
-  const main = document.querySelector("#admin main");
-
-  main.innerHTML = `
-    <div class="admin-tools">
-      <div>
-        <small>MERCHANT CONSOLE</small>
-        <h1>Orders</h1>
-      </div>
-    </div>
-
-    <div id="ordersList">
-      Loading orders...
-    </div>
-  `;
-
-  const { data, error } = await supabaseClient
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending:false });
-
-  if(error){
-    document.getElementById("ordersList").innerHTML =
-      "<p>Could not load orders.</p>";
-    console.error(error);
-    return;
-  }
-
-  if(!data.length){
-    document.getElementById("ordersList").innerHTML =
-      "<p>No orders yet.</p>";
-    return;
-  }
-
-  document.getElementById("ordersList").innerHTML = data.map(order => `
-    <div class="stat" style="margin-bottom:15px">
-      <strong>Order ${order.id}</strong>
-      <p>Customer: ${order.customer_name}</p>
-      <p>Email: ${order.customer_email}</p>
-      <p>Address: ${order.shipping_address}</p>
-      <p>Total: ₹${Number(order.total).toLocaleString("en-IN")}</p>
-      <p>Status: ${order.status}</p>
-    </div>
-  `).join("");
-}
-
+  </aside>
 const defaults=[
 ["Cyber Nova","Anime Figures",2199,12,""],
 ["Moonblade Sentinel","Statues",3499,7,""],
@@ -375,6 +329,72 @@ function closeCart(){
   document.getElementById("cartPanel").style.transform = "translateX(100%)";
 }
 function scrollShop(){document.getElementById("shop").scrollIntoView({behavior:"smooth"})}
+function showAdminSection(section){
+
+  if(section === "overview"){
+    renderAdmin();
+    return;
+  }
+
+  if(section === "products"){
+    renderAdmin();
+    return;
+  }
+
+  if(section === "orders"){
+    showAdminOrders();
+    return;
+  }
+
+  alert(section.charAt(0).toUpperCase() + section.slice(1) + " section coming next.");
+}
+
+async function showAdminOrders(){
+
+  const main = document.querySelector("#admin main");
+
+  main.innerHTML = `
+    <div class="admin-tools">
+      <div>
+        <small>MERCHANT CONSOLE</small>
+        <h1>Orders</h1>
+      </div>
+    </div>
+
+    <div id="ordersList">
+      Loading orders...
+    </div>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  if(error){
+    document.getElementById("ordersList").innerHTML =
+      "<p>Could not load orders.</p>";
+    console.error(error);
+    return;
+  }
+
+  if(!data.length){
+    document.getElementById("ordersList").innerHTML =
+      "<p>No orders yet.</p>";
+    return;
+  }
+
+  document.getElementById("ordersList").innerHTML = data.map(order => `
+    <div class="stat" style="margin-bottom:15px">
+      <strong>Order ${order.id}</strong>
+      <p>Customer: ${order.customer_name}</p>
+      <p>Email: ${order.customer_email}</p>
+      <p>Address: ${order.shipping_address}</p>
+      <p>Total: ₹${Number(order.total).toLocaleString("en-IN")}</p>
+      <p>Status: ${order.status}</p>
+    </div>
+  `).join("");
+}
 function openAdmin(){store.style.display="none";admin.style.display="block";renderAdmin()}
 function closeAdmin(){admin.style.display="none";store.style.display="block"}
 function renderAdmin(){count.textContent=products.length;low.textContent=products.filter(p=>p.stock>0&&p.stock<=5).length;adminProducts.innerHTML=products.map((p,i)=>`<tr><td><b>${p.name}</b></td><td>${p.cat}</td><td>${p.price?money(p):"Custom"}</td><td>${p.stock}</td><td><button class="ghost" onclick="delProduct(${i})">Delete</button></td></tr>`).join("")}
