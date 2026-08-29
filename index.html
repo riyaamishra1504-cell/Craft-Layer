@@ -258,7 +258,7 @@ function showCheckout(){
 
   panel.style.transform = "translateX(0)";
 }
-function placeOrder(event){
+async function placeOrder(event){
   event.preventDefault();
 
   const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
@@ -270,30 +270,37 @@ function placeOrder(event){
 
   const order = {
     id: "CL-" + Date.now(),
-    customer: {
-      name: document.getElementById("customerName").value,
-      email: document.getElementById("customerEmail").value,
-      phone: document.getElementById("customerPhone").value,
-      address: document.getElementById("customerAddress").value,
-      city: document.getElementById("customerCity").value,
-      state: document.getElementById("customerState").value,
-      pin: document.getElementById("customerPin").value
-    },
-    paymentMethod: document.getElementById("paymentMethod").value,
+
+    customer_name: document.getElementById("customerName").value,
+    customer_email: document.getElementById("customerEmail").value,
+    customer_phone: document.getElementById("customerPhone").value,
+
+    address: document.getElementById("customerAddress").value,
+    city: document.getElementById("customerCity").value,
+    state: document.getElementById("customerState").value,
+    pin: document.getElementById("customerPin").value,
+
+    payment_method: document.getElementById("paymentMethod").value,
+
     items: cart,
-    createdAt: new Date().toISOString()
+
+    total: cart.reduce(
+      (sum, item) => sum + Number(item.price || 0) * item.quantity,
+      0
+    ),
+
+    created_at: new Date().toISOString()
   };
 
-  order.total = cart.reduce(
-    (sum,item) => sum + Number(item.price || 0) * item.quantity,
-    0
-  );
+  const { error } = await supabaseClient
+    .from("orders")
+    .insert([order]);
 
-  const orders = JSON.parse(localStorage.getItem("craftLayerOrders") || "[]");
-
-  orders.push(order);
-
-  localStorage.setItem("craftLayerOrders", JSON.stringify(orders));
+  if(error){
+    console.error("Order error:", error);
+    alert("Sorry, your order could not be placed.");
+    return;
+  }
 
   localStorage.removeItem("craftLayerCart");
   localStorage.removeItem("craftLayerBag");
@@ -301,12 +308,12 @@ function placeOrder(event){
   bag = 0;
   document.getElementById("bag").textContent = "0";
 
-  content = document.getElementById("cartContent");
+  const content = document.getElementById("cartContent");
 
   content.innerHTML = `
     <h2>Order Placed 🎉</h2>
     <p>Order ID: <strong>${order.id}</strong></p>
-    <p>Thank you, ${order.customer.name}!</p>
+    <p>Thank you, ${order.customer_name}!</p>
     <p>Total: <strong>₹${order.total.toLocaleString("en-IN")}</strong></p>
     <button class="pill" onclick="closeCart()">Continue Shopping</button>
   `;
