@@ -274,6 +274,8 @@ async function placeOrder(event){
   );
 
   const order = {
+    id: crypto.randomUUID(),
+
     customer_name: document.getElementById("customerName").value,
     customer_email: document.getElementById("customerEmail").value,
     customer_phone: document.getElementById("customerPhone").value,
@@ -292,11 +294,9 @@ async function placeOrder(event){
     total: total
   };
 
-  const { data, error } = await supabaseClient
+  const { error } = await supabaseClient
     .from("orders")
-    .insert([order])
-    .select()
-    .single();
+    .insert([order]);
 
   if(error){
     console.error("Order error:", error);
@@ -314,9 +314,9 @@ async function placeOrder(event){
 
   content.innerHTML = `
     <h2>Order Placed 🎉</h2>
-    <p>Order ID: <strong>${data.id}</strong></p>
-    <p>Thank you, ${data.customer_name}!</p>
-    <p>Total: <strong>₹${Number(data.total).toLocaleString("en-IN")}</strong></p>
+    <p>Order ID: <strong>${order.id}</strong></p>
+    <p>Thank you, ${order.customer_name}!</p>
+    <p>Total: <strong>₹${order.total.toLocaleString("en-IN")}</strong></p>
     <button class="pill" onclick="closeCart()">Continue Shopping</button>
   `;
 }
