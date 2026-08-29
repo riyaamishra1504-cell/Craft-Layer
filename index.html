@@ -268,33 +268,35 @@ async function placeOrder(event){
     return;
   }
 
-  const order = {
-    id: "CL-" + Date.now(),
+  const total = cart.reduce(
+    (sum, item) => sum + Number(item.price || 0) * item.quantity,
+    0
+  );
 
+  const order = {
     customer_name: document.getElementById("customerName").value,
     customer_email: document.getElementById("customerEmail").value,
     customer_phone: document.getElementById("customerPhone").value,
 
-    address: document.getElementById("customerAddress").value,
+    shipping_address:
+      document.getElementById("customerAddress").value,
+
     city: document.getElementById("customerCity").value,
     state: document.getElementById("customerState").value,
     pin: document.getElementById("customerPin").value,
 
-    payment_method: document.getElementById("paymentMethod").value,
+    payment_method:
+      document.getElementById("paymentMethod").value,
 
     items: cart,
-
-    total: cart.reduce(
-      (sum, item) => sum + Number(item.price || 0) * item.quantity,
-      0
-    ),
-
-    created_at: new Date().toISOString()
+    total: total
   };
 
-  const { error } = await supabaseClient
+  const { data, error } = await supabaseClient
     .from("orders")
-    .insert([order]);
+    .insert([order])
+    .select()
+    .single();
 
   if(error){
     console.error("Order error:", error);
@@ -312,9 +314,9 @@ async function placeOrder(event){
 
   content.innerHTML = `
     <h2>Order Placed 🎉</h2>
-    <p>Order ID: <strong>${order.id}</strong></p>
-    <p>Thank you, ${order.customer_name}!</p>
-    <p>Total: <strong>₹${order.total.toLocaleString("en-IN")}</strong></p>
+    <p>Order ID: <strong>${data.id}</strong></p>
+    <p>Thank you, ${data.customer_name}!</p>
+    <p>Total: <strong>₹${Number(data.total).toLocaleString("en-IN")}</strong></p>
     <button class="pill" onclick="closeCart()">Continue Shopping</button>
   `;
 }
