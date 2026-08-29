@@ -36,19 +36,70 @@ button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-b
   </div>
   <div id="cartContent" style="margin-top:30px"></div>
 </div>
-<div id="admin" class="admin"><div class="admin-layout"><aside><div class="logo">CRAFT <span>LAYER</span><small style="display:block;color:#777;margin-top:4px">MERCHANT</small></div><p>Overview</p><p>Products</p><p>Orders</p><p>Inventory</p><p>Customers</p><p>Collections</p><p>Coupons</p><p>Payments</p><p>Shipping</p><p>Analytics</p><button class="ghost" onclick="closeAdmin()">← Storefront</button></aside><main><div class="admin-tools"><div><small>MERCHANT CONSOLE</small><h1>Store overview</h1></div><button class="pill" onclick="openProduct()">+ Add product</button></div><div class="admin-grid"><div class="stat"><small>Revenue</small><strong>₹0</strong></div><div class="stat"><small>Products</small><strong id="count">0</strong></div><div class="stat"><small>Orders</small><strong>0</strong></div><div class="stat"><small>Low stock</small><strong id="low">0</strong></div></div><table><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr></thead><tbody id="adminProducts"></tbody></table></main></div></div>
+<div id="admin" class="admin"><div class="admin-layout"><aside>
+  <div class="logo">
+    CRAFT <span>LAYER</span>
+    <small style="display:block;color:#777;margin-top:4px">MERCHANT</small>
+  </div>
 
-<div id="modal" class="modal"><div class="modal-box"><h2>Add product</h2><input id="pn" placeholder="Product name"><input id="pc" placeholder="Category"><input id="pp" type="number" placeholder="Price"><select id="pm"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select><input id="ps" type="number" placeholder="Stock"><input id="pi" placeholder="Product image URL"><button class="pill" onclick="saveProduct()">Save product</button> <button class="ghost" onclick="closeProduct()">Cancel</button></div></div>
+  <button class="admin-menu active" onclick="showAdminSection('overview')">Overview</button>
+  <button class="admin-menu" onclick="showAdminSection('products')">Products</button>
+  <button class="admin-menu" onclick="showAdminSection('orders')">Orders</button>
+  <button class="admin-menu" onclick="showAdminSection('inventory')">Inventory</button>
+  <button class="admin-menu" onclick="showAdminSection('customers')">Customers</button>
+  <button class="admin-menu" onclick="showAdminSection('collections')">Collections</button>
+  <button class="admin-menu" onclick="showAdminSection('coupons')">Coupons</button>
+  <button class="admin-menu" onclick="showAdminSection('payments')">Payments</button>
+  <button class="admin-menu" onclick="showAdminSection('shipping')">Shipping</button>
+  <button class="admin-menu" onclick="showAdminSection('analytics')">Analytics</button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <button class="ghost" onclick="closeAdmin()">← Storefront</button>
+async function showAdminOrders(){
 
-<script>
-const SUPABASE_URL = "https://ijbkwhoxlfoefrxzeofz.supabase.co";
-const SUPABASE_KEY = "sb_publishable_4MSuYPStCRDDT0TqussTmw_jKA0e6bE";
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+  const main = document.querySelector("#admin main");
+
+  main.innerHTML = `
+    <div class="admin-tools">
+      <div>
+        <small>MERCHANT CONSOLE</small>
+        <h1>Orders</h1>
+      </div>
+    </div>
+
+    <div id="ordersList">
+      Loading orders...
+    </div>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  if(error){
+    document.getElementById("ordersList").innerHTML =
+      "<p>Could not load orders.</p>";
+    console.error(error);
+    return;
+  }
+
+  if(!data.length){
+    document.getElementById("ordersList").innerHTML =
+      "<p>No orders yet.</p>";
+    return;
+  }
+
+  document.getElementById("ordersList").innerHTML = data.map(order => `
+    <div class="stat" style="margin-bottom:15px">
+      <strong>Order ${order.id}</strong>
+      <p>Customer: ${order.customer_name}</p>
+      <p>Email: ${order.customer_email}</p>
+      <p>Address: ${order.shipping_address}</p>
+      <p>Total: ₹${Number(order.total).toLocaleString("en-IN")}</p>
+      <p>Status: ${order.status}</p>
+    </div>
+  `).join("");
+}
 
 const defaults=[
 ["Cyber Nova","Anime Figures",2199,12,""],
