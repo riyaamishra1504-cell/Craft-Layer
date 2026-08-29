@@ -40,7 +40,16 @@ button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-b
 
 <div id="modal" class="modal"><div class="modal-box"><h2>Add product</h2><input id="pn" placeholder="Product name"><input id="pc" placeholder="Category"><input id="pp" type="number" placeholder="Price"><select id="pm"><option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option></select><input id="ps" type="number" placeholder="Stock"><input id="pi" placeholder="Product image URL"><button class="pill" onclick="saveProduct()">Save product</button> <button class="ghost" onclick="closeProduct()">Cancel</button></div></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+const SUPABASE_URL = "https://ijbkwhoxlfoefrxzeofz.supabase.co";
+const SUPABASE_KEY = "sb_publishable_4MSuYPStCRDDT0TqussTmw_jKA0e6bE";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const defaults=[
 ["Cyber Nova","Anime Figures",2199,12,""],
 ["Moonblade Sentinel","Statues",3499,7,""],
