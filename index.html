@@ -3256,43 +3256,27 @@ function closeProduct(){
 
 }
 
-
 /* ================= SAVE PRODUCT ================= */
 
 async function saveProduct(){
 
-  const name =
-    pn.value ||
-    "Untitled Model";
+  const productData = {
+    name: pn.value || "Untitled Model",
+    description: "",
+    price: Number(pp.value) || 0,
+    stock: Number(ps.value) || 0,
+    category: pc.value || "Collectibles",
+    image_url: pi.value || ""
+  };
 
-  const category =
-    pc.value ||
-    "Collectibles";
 
-  const price =
-    Number(pp.value) || 0;
+  /* ================= SAVE TO SUPABASE ================= */
 
-  const stock =
-    Number(ps.value) || 0;
-
-  const image =
-    pi.value || "";
-
-  const { data, error } =
+  const { error } =
     await supabaseClient
       .from("products")
-      .insert([
-        {
-          name: name,
-          description: "",
-          price: price,
-          stock: stock,
-          category: category,
-          image_url: image
-        }
-      ])
-      .select()
-      .single();
+      .insert([productData]);
+
 
   if(error){
 
@@ -3310,26 +3294,8 @@ async function saveProduct(){
 
   }
 
-  /* Add the new Supabase product to the website */
 
-  products.push({
-    id: data.id,
-    name: data.name,
-    cat: data.category,
-    price: Number(data.price) || 0,
-    currency: "INR",
-    stock: Number(data.stock) || 0,
-    image: data.image_url || ""
-  });
-
-  /* Keep localStorage synchronized */
-
-  localStorage.setItem(
-    "craftLayerProducts",
-    JSON.stringify(products)
-  );
-
-  /* Clear form */
+  /* ================= CLEAR FORM ================= */
 
   pn.value = "";
   pc.value = "";
@@ -3337,7 +3303,14 @@ async function saveProduct(){
   ps.value = "";
   pi.value = "";
 
+
   closeProduct();
+
+
+  /* ================= RELOAD FROM SUPABASE ================= */
+
+  await loadProductsFromSupabase();
+
 
   renderAdmin();
 
