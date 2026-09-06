@@ -3259,54 +3259,83 @@ function closeProduct(){
 
 /* ================= SAVE PRODUCT ================= */
 
-function saveProduct(){
+async function saveProduct(){
 
-  const product = {
+  const name =
+    pn.value ||
+    "Untitled Model";
 
-    id:
-      "product-" +
-      Date.now(),
+  const category =
+    pc.value ||
+    "Collectibles";
 
-    name:
-      pn.value ||
-      "Untitled Model",
+  const price =
+    Number(pp.value) || 0;
 
-    cat:
-      pc.value ||
-      "Collectibles",
+  const stock =
+    Number(ps.value) || 0;
 
-    price:
-      Number(pp.value) || 0,
+  const image =
+    pi.value || "";
 
-    currency:
-      pm.value,
+  const { data, error } =
+    await supabaseClient
+      .from("products")
+      .insert([
+        {
+          name: name,
+          description: "",
+          price: price,
+          stock: stock,
+          category: category,
+          image_url: image
+        }
+      ])
+      .select()
+      .single();
 
-    stock:
-      Number(ps.value) || 0,
+  if(error){
 
-    image:
-      pi.value || ""
+    console.error(
+      "Product save error:",
+      error
+    );
 
-  };
+    alert(
+      "Could not save product.\n\n" +
+      error.message
+    );
 
+    return;
 
-  products.push(
-    product
-  );
+  }
 
+  /* Add the new Supabase product to the website */
+
+  products.push({
+    id: data.id,
+    name: data.name,
+    cat: data.category,
+    price: Number(data.price) || 0,
+    currency: "INR",
+    stock: Number(data.stock) || 0,
+    image: data.image_url || ""
+  });
+
+  /* Keep localStorage synchronized */
 
   localStorage.setItem(
     "craftLayerProducts",
     JSON.stringify(products)
   );
 
+  /* Clear form */
 
   pn.value = "";
   pc.value = "";
   pp.value = "";
   ps.value = "";
   pi.value = "";
-
 
   closeProduct();
 
