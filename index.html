@@ -1,61 +1,867 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRAFT LAYER — 3D Collectibles</title>
 <meta name="description" content="CRAFT LAYER — futuristic 3D printed anime collectibles and custom models.">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
-:root{--bg:#07070a;--panel:#101116;--line:#292b35;--text:#f6f5f2;--muted:#9b9da8;--accent:#a9ff36;--purple:#7b5cff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.nav{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;background:#07070add;backdrop-filter:blur(18px);z-index:20}
-.logo{font:700 21px "Space Grotesk";letter-spacing:-1px}.logo span{color:var(--accent)}nav{display:flex;gap:26px}nav a{color:#bbb;text-decoration:none;font-size:14px}.nav-actions{display:flex;gap:8px}.pill,.ghost{border:1px solid var(--line);background:#101116;color:#eee;border-radius:999px;padding:10px 15px}.pill{background:var(--accent);color:#07070a;border-color:var(--accent);font-weight:700}
-.hero{min-height:650px;padding:90px 8%;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;background:radial-gradient(circle at 75% 15%,#211445 0,transparent 32%)}.eyebrow{color:var(--accent);font-size:11px;letter-spacing:2.5px;font-weight:700}.hero h1{font:600 clamp(48px,7vw,92px)/.92 "Space Grotesk";letter-spacing:-5px;margin:18px 0}.hero h1 em{font-style:normal;color:#777b88}.lead{color:#a5a6af;max-width:560px;line-height:1.7;font-size:17px}.hero-art{height:430px;position:relative;display:grid;place-items:center}.ring{position:absolute;width:330px;height:330px;border:1px solid #45475a;border-radius:50%;box-shadow:0 0 80px #7b5cff33}.core{width:210px;height:280px;border-radius:45% 45% 20% 20%;background:linear-gradient(145deg,#555867,#101116);transform:rotate(-9deg);box-shadow:35px 35px 70px #000}.core:after{content:"";display:block;width:60px;height:60px;border:2px solid var(--accent);border-radius:50%;margin:65px auto;box-shadow:0 0 30px #a9ff3688}.hero-badge{position:absolute;right:5%;bottom:30px;border:1px solid var(--line);background:#101116cc;padding:14px 17px;border-radius:12px;font-size:12px;color:#aaa}
-.section{padding:90px 7%}.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:32px}.section h2{font:500 48px "Space Grotesk";letter-spacing:-2px;margin:8px 0}.filters{display:flex;gap:8px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:transparent;color:#aaa;border-radius:999px;padding:9px 14px}.filter.active{color:#07070a;background:var(--accent);border-color:var(--accent)}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:linear-gradient(145deg,#111217,#0b0c10);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.25s}.card:hover{transform:translateY(-5px);border-color:#555}.art{height:250px;background:radial-gradient(circle at 50% 40%,#2b2348,#12131a 60%);display:grid;place-items:center;position:relative}.shape{width:100px;height:150px;border-radius:45% 45% 25% 25%;background:linear-gradient(145deg,#777b8b,#1d1e25);box-shadow:20px 20px 40px #000;transform:rotate(-6deg)}.shape:after{content:"";display:block;width:26px;height:26px;border-radius:50%;background:var(--accent);margin:35px auto;box-shadow:0 0 25px var(--accent)}.tag{position:absolute;left:12px;top:12px;background:#07070acc;border:1px solid var(--line);padding:6px 9px;border-radius:7px;font-size:9px;letter-spacing:1px}.info{padding:17px}.info small{color:#777;font-size:10px;letter-spacing:1.3px}.info h3{font:500 20px "Space Grotesk";margin:7px 0}.info p{color:#888;font-size:13px;line-height:1.5;min-height:39px}.price{display:flex;justify-content:space-between;align-items:center}.buy{border:0;background:#24262e;color:#fff;border-radius:9px;padding:9px 11px}
-.dark{background:#0d0e13;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.feature{
-  padding:28px;border:1px solid var(--line);border-radius:14px;background:#101116}.feature b{color:var(--accent);font:600 28px "Space Grotesk"}.feature h3{font:500 22px "Space Grotesk"}.feature p{color:#888;line-height:1.6}
-.admin{display:none;min-height:100vh;background:#f0f0ed;color:#171717}.admin-layout{display:flex;min-height:100vh}.admin aside{width:240px;background:#0b0b0e;color:#ddd;padding:25px}.admin main{flex:1;padding:40px}.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat{background:#fff;padding:22px;border-radius:13px;border:1px solid #ddd}.stat small{color:#777}.stat strong{display:block;font-size:27px;margin-top:10px}.admin table{width:100%;border-collapse:collapse;background:#fff;margin-top:20px}.admin th,.admin td{padding:15px;text-align:left;border-bottom:1px solid #eee}.admin-tools{display:flex;justify-content:space-between;align-items:center}.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;z-index:50}.modal-box{background:#121319;border:1px solid #333;border-radius:18px;padding:28px;width:min(520px,92vw)}.modal-box h2{font:500 30px "Space Grotesk"}.modal-box input,.modal-box select{width:100%;padding:12px;margin:7px 0;background:#0b0c10;color:#fff;border:1px solid #333;border-radius:8px}.cart{position:fixed;right:20px;bottom:20px;background:var(--accent);color:#080808;border:0;border-radius:50px;padding:14px 20px;font-weight:700;z-index:30}footer{padding:60px 7%;border-top:1px solid var(--line);color:#777;display:flex;justify-content:space-between}
-@media(max-width:900px){nav{display:none}.hero{grid-template-columns:1fr;padding-top:55px}.hero-art{height:330px}.grid{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.hero h1{letter-spacing:-3px}.section h2{font-size:38px}.nav{padding:0 4%}.nav-actions .ghost{display:none}footer{display:block}}
+
+:root{
+--bg:#07070a;
+--panel:#101116;
+--line:#292b35;
+--text:#f6f5f2;
+--muted:#9b9da8;
+--accent:#a9ff36;
+--purple:#7b5cff
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family:Inter,sans-serif
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.nav{
+height:76px;
+border-bottom:1px solid var(--line);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 5%;
+position:sticky;
+top:0;
+background:#07070add;
+backdrop-filter:blur(18px);
+z-index:20
+}
+
+.logo{
+font:700 21px "Space Grotesk";
+letter-spacing:-1px
+}
+
+.logo span{color:var(--accent)}
+
+nav{
+display:flex;
+gap:26px
+}
+
+nav a{
+color:#bbb;
+text-decoration:none;
+font-size:14px
+}
+
+.nav-actions{
+display:flex;
+gap:8px
+}
+
+.pill,.ghost{
+border:1px solid var(--line);
+background:#101116;
+color:#eee;
+border-radius:999px;
+padding:10px 15px
+}
+
+.pill{
+background:var(--accent);
+color:#07070a;
+border-color:var(--accent);
+font-weight:700
+}
+
+.hero{
+min-height:650px;
+padding:90px 8%;
+display:grid;
+grid-template-columns:1.1fr .9fr;
+align-items:center;
+background:radial-gradient(circle at 75% 15%,#211445 0,transparent 32%)
+}
+
+.eyebrow{
+color:var(--accent);
+font-size:11px;
+letter-spacing:2.5px;
+font-weight:700
+}
+
+.hero h1{
+font:600 clamp(48px,7vw,92px)/.92 "Space Grotesk";
+letter-spacing:-5px;
+margin:18px 0
+}
+
+.hero h1 em{
+font-style:normal;
+color:#777b88
+}
+
+.lead{
+color:#a5a6af;
+max-width:560px;
+line-height:1.7;
+font-size:17px
+}
+
+.hero-art{
+height:430px;
+position:relative;
+display:grid;
+place-items:center
+}
+
+.ring{
+position:absolute;
+width:330px;
+height:330px;
+border:1px solid #45475a;
+border-radius:50%;
+box-shadow:0 0 80px #7b5cff33
+}
+
+.core{
+width:210px;
+height:280px;
+border-radius:45% 45% 20% 20%;
+background:linear-gradient(145deg,#555867,#101116);
+transform:rotate(-9deg);
+box-shadow:35px 35px 70px #000
+}
+
+.core:after{
+content:"";
+display:block;
+width:60px;
+height:60px;
+border:2px solid var(--accent);
+border-radius:50%;
+margin:65px auto;
+box-shadow:0 0 30px #a9ff3688
+}
+
+.hero-badge{
+position:absolute;
+right:5%;
+bottom:30px;
+border:1px solid var(--line);
+background:#101116cc;
+padding:14px 17px;
+border-radius:12px;
+font-size:12px;
+color:#aaa
+}
+
+.section{
+padding:90px 7%
+}
+
+.section-head{
+display:flex;
+justify-content:space-between;
+align-items:end;
+margin-bottom:32px
+}
+
+.section h2{
+font:500 48px "Space Grotesk";
+letter-spacing:-2px;
+margin:8px 0
+}
+
+.filters{
+display:flex;
+gap:8px;
+flex-wrap:wrap
+}
+
+.filter{
+border:1px solid var(--line);
+background:transparent;
+color:#aaa;
+border-radius:999px;
+padding:9px 14px
+}
+
+.filter.active{
+color:#07070a;
+background:var(--accent);
+border-color:var(--accent)
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:16px
+}
+
+.card{
+background:linear-gradient(145deg,#111217,#0b0c10);
+border:1px solid var(--line);
+border-radius:16px;
+overflow:hidden;
+transition:.25s
+}
+
+.card:hover{
+transform:translateY(-5px);
+border-color:#555
+}
+
+.art{
+height:250px;
+background:radial-gradient(circle at 50% 40%,#2b2348,#12131a 60%);
+display:grid;
+place-items:center;
+position:relative
+}
+
+.shape{
+width:100px;
+height:150px;
+border-radius:45% 45% 25% 25%;
+background:linear-gradient(145deg,#777b8b,#1d1e25);
+box-shadow:20px 20px 40px #000;
+transform:rotate(-6deg)
+}
+
+.shape:after{
+content:"";
+display:block;
+width:26px;
+height:26px;
+border-radius:50%;
+background:var(--accent);
+margin:35px auto;
+box-shadow:0 0 25px var(--accent)
+}
+
+.tag{
+position:absolute;
+left:12px;
+top:12px;
+background:#07070acc;
+border:1px solid var(--line);
+padding:6px 9px;
+border-radius:7px;
+font-size:9px;
+letter-spacing:1px
+}
+
+.info{
+padding:17px
+}
+
+.info small{
+color:#777;
+font-size:10px;
+letter-spacing:1.3px
+}
+
+.info h3{
+font:500 20px "Space Grotesk";
+margin:7px 0
+}
+
+.info p{
+color:#888;
+font-size:13px;
+line-height:1.5;
+min-height:39px
+}
+
+.price{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.buy{
+border:0;
+background:#24262e;
+color:#fff;
+border-radius:9px;
+padding:9px 11px
+}
+
+.dark{
+background:#0d0e13;
+border-top:1px solid var(--line);
+border-bottom:1px solid var(--line)
+}
+
+.features{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px
+}
+
+.feature{
+padding:28px;
+border:1px solid var(--line);
+border-radius:14px;
+background:#101116
+}
+
+.feature b{
+color:var(--accent);
+font:600 28px "Space Grotesk"
+}
+
+.feature h3{
+font:500 22px "Space Grotesk"
+}
+
+.feature p{
+color:#888;
+line-height:1.6
+}
+
+.admin{
+display:none;
+min-height:100vh;
+background:#f0f0ed;
+color:#171717
+}
+
+.admin-layout{
+display:flex;
+min-height:100vh
+}
+
+.admin aside{
+width:240px;
+background:#0b0b0e;
+color:#ddd;
+padding:25px
+}
+
+.admin main{
+flex:1;
+padding:40px
+}
+
+.admin-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px
+}
+
+.stat{
+background:#fff;
+padding:22px;
+border-radius:13px;
+border:1px solid #ddd
+}
+
+.stat small{
+color:#777
+}
+
+.stat strong{
+display:block;
+font-size:27px;
+margin-top:10px
+}
+
+.admin table{
+width:100%;
+border-collapse:collapse;
+background:#fff;
+margin-top:20px
+}
+
+.admin th,.admin td{
+padding:15px;
+text-align:left;
+border-bottom:1px solid #eee
+}
+
+.admin-tools{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:#000b;
+display:none;
+place-items:center;
+z-index:50
+}
+
+.modal-box{
+background:#121319;
+border:1px solid #333;
+border-radius:18px;
+padding:28px;
+width:min(520px,92vw)
+}
+
+.modal-box h2{
+font:500 30px "Space Grotesk"
+}
+
+.modal-box input,.modal-box select{
+width:100%;
+padding:12px;
+margin:7px 0;
+background:#0b0c10;
+color:#fff;
+border:1px solid #333;
+border-radius:8px
+}
+
+.cart{
+position:fixed;
+right:20px;
+bottom:20px;
+background:var(--accent);
+color:#080808;
+border:0;
+border-radius:50px;
+padding:14px 20px;
+font-weight:700;
+z-index:30
+}
+
+footer{
+padding:60px 7%;
+border-top:1px solid var(--line);
+color:#777;
+display:flex;
+justify-content:space-between
+}
+
+@media(max-width:900px){
+nav{display:none}
+.hero{
+grid-template-columns:1fr;
+padding-top:55px
+}
+.hero-art{height:330px}
+.grid{grid-template-columns:repeat(2,1fr)}
+.features{grid-template-columns:1fr}
+.admin-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:560px){
+.grid{grid-template-columns:1fr}
+.hero h1{letter-spacing:-3px}
+.section h2{font-size:38px}
+.nav{padding:0 4%}
+.nav-actions .ghost{display:none}
+footer{display:block}
+}
 </style>
 </head>
+
 <body>
+
 <div id="store">
-<header class="nav"><div class="logo">CRAFT <span>LAYER</span></div><nav><a href="#shop">Shop</a><a href="#collections">Collections</a><a href="#process">Process</a><a href="#about">About</a></nav><div class="nav-actions"><button class="ghost" onclick="openAdmin()">Admin</button><button class="pill" onclick="scrollShop()">Shop now</button></div></header>
-<section class="hero"><div><div class="eyebrow">DIGITAL CRAFT → PHYSICAL FORM</div><h1>Collect the worlds<br><em>you imagine.</em></h1><p class="lead">CRAFT LAYER creates 3D-printed anime figures, statues, miniatures and custom collectibles — designed around detail, personality and display.</p><button class="pill" onclick="scrollShop()">Explore models →</button></div><div class="hero-art"><div class="ring"></div><div class="core"></div><div class="hero-badge">PRECISION / 01<br><b>3D COLLECTIBLES</b></div></div></section>
-<section id="shop" class="section"><div class="section-head"><div><div class="eyebrow">THE COLLECTION</div><h2>Featured models</h2></div><div class="filters" id="filters"></div></div><div class="grid" id="products"></div></section>
-<section id="collections" class="section dark"><div class="eyebrow">WHY CRAFT LAYER</div><h2>Made for collectors.<br><em>Built around detail.</em></h2><div class="features"><div class="feature"><b>01</b><h3>Print precision</h3><p>Clean geometry, controlled layers and reliable repeatability.</p></div><div class="feature"><b>02</b><h3>Display first</h3><p>Scale, finish, weight and packaging are treated as part of the collectible.</p></div><div class="feature"><b>03</b><h3>Custom by design</h3><p>Architecture supports custom models, variants, materials and made-to-order products.</p></div></div></section>
-<section id="process" class="section"><div class="eyebrow">FROM MODEL TO SHELF</div><h2>The CRAFT LAYER process</h2><div class="features"><div class="feature"><b>01</b><h3>Model</h3><p>Prepare and validate digital geometry before production.</p></div><div class="feature"><b>02</b><h3>Print</h3><p>Choose material, scale and finish, then produce the physical form.</p></div><div class="feature"><b>03</b><h3>Finish</h3><p>Inspect, package and prepare every order for its destination.</p></div></div></section>
-<section id="about" class="section dark"><div class="eyebrow">CRAFT LAYER</div><h2>A storefront built to evolve.</h2><p class="lead">Products, prices, currencies, payment methods, shipping regions and collections are designed to be managed later from the merchant system rather than hard-coded into the storefront.</p></section>
-<footer><div><div class="logo">CRAFT <span>LAYER</span></div><p>3D collectibles for the next generation.</p></div><div>India + Worldwide<br>COD · Razorpay · Paytm · PayPal</div></footer>
-<button class="cart" onclick="showCart()">Bag (<span id="bag">0</span>)</button></div>
-<div id="cartPanel" style="position:fixed;top:0;right:0;width:min(420px,92vw);height:100vh;background:#101116;border-left:1px solid #292b35;z-index:100;transform:translateX(100%);transition:transform .3s ease;padding:28px;overflow:auto">
-  <div style="display:flex;justify-content:space-between;align-items:center">
-    <h2 style="margin:0">Your Bag</h2>
-    <button class="ghost" onclick="closeCart()">✕</button>
-  </div>
-  <div id="cartContent" style="margin-top:30px"></div>
+
+<header class="nav">
+<div class="logo">CRAFT <span>LAYER</span></div>
+
+<nav>
+<a href="#shop">Shop</a>
+<a href="#collections">Collections</a>
+<a href="#process">Process</a>
+<a href="#about">About</a>
+</nav>
+
+<div class="nav-actions">
+<button class="ghost" onclick="openAdmin()">Admin</button>
+<button class="pill" onclick="scrollShop()">Shop now</button>
 </div>
-<div id="admin" class="admin"><div class="admin-layout"><aside>
-  <div class="logo">
-    CRAFT <span>LAYER</span>
-    <small style="display:block;color:#777;margin-top:4px">MERCHANT</small>
-  </div>
+</header>
 
-  <button class="admin-menu active" onclick="showAdminSection('overview')">Overview</button>
-  <button class="admin-menu" onclick="showAdminSection('products')">Products</button>
-  <button class="admin-menu" onclick="showAdminSection('orders')">Orders</button>
-  <button class="admin-menu" onclick="showAdminSection('inventory')">Inventory</button>
-  <button class="admin-menu" onclick="showAdminSection('customers')">Customers</button>
-  <button class="admin-menu" onclick="showAdminSection('collections')">Collections</button>
-  <button class="admin-menu" onclick="showAdminSection('coupons')">Coupons</button>
-  <button class="admin-menu" onclick="showAdminSection('payments')">Payments</button>
-  <button class="admin-menu" onclick="showAdminSection('shipping')">Shipping</button>
-  <button class="admin-menu" onclick="showAdminSection('analytics')">Analytics</button>
+<section class="hero">
 
-  <button class="ghost" onclick="closeAdmin()">← Storefront</button>
-  </aside>
-const defaults=[
+<div>
+<div class="eyebrow">DIGITAL CRAFT → PHYSICAL FORM</div>
+
+<h1>
+Collect the worlds<br>
+<em>you imagine.</em>
+</h1>
+
+<p class="lead">
+CRAFT LAYER creates 3D-printed anime figures, statues, miniatures and custom collectibles — designed around detail, personality and display.
+</p>
+
+<button class="pill" onclick="scrollShop()">
+Explore models →
+</button>
+</div>
+
+<div class="hero-art">
+<div class="ring"></div>
+<div class="core"></div>
+
+<div class="hero-badge">
+PRECISION / 01<br>
+<b>3D COLLECTIBLES</b>
+</div>
+</div>
+
+</section>
+
+<section id="shop" class="section">
+
+<div class="section-head">
+
+<div>
+<div class="eyebrow">THE COLLECTION</div>
+<h2>Featured models</h2>
+</div>
+
+<div class="filters" id="filters"></div>
+
+</div>
+
+<div class="grid" id="products"></div>
+
+</section>
+
+<section id="collections" class="section dark">
+
+<div class="eyebrow">WHY CRAFT LAYER</div>
+
+<h2>
+Made for collectors.<br>
+<em>Built around detail.</em>
+</h2>
+
+<div class="features">
+
+<div class="feature">
+<b>01</b>
+<h3>Print precision</h3>
+<p>Clean geometry, controlled layers and reliable repeatability.</p>
+</div>
+
+<div class="feature">
+<b>02</b>
+<h3>Display first</h3>
+<p>Scale, finish, weight and packaging are treated as part of the collectible.</p>
+</div>
+
+<div class="feature">
+<b>03</b>
+<h3>Custom by design</h3>
+<p>Architecture supports custom models, variants, materials and made-to-order products.</p>
+</div>
+
+</div>
+</section>
+
+<section id="process" class="section">
+
+<div class="eyebrow">FROM MODEL TO SHELF</div>
+
+<h2>The CRAFT LAYER process</h2>
+
+<div class="features">
+
+<div class="feature">
+<b>01</b>
+<h3>Model</h3>
+<p>Prepare and validate digital geometry before production.</p>
+</div>
+
+<div class="feature">
+<b>02</b>
+<h3>Print</h3>
+<p>Choose material, scale and finish, then produce the physical form.</p>
+</div>
+
+<div class="feature">
+<b>03</b>
+<h3>Finish</h3>
+<p>Inspect, package and prepare every order for its destination.</p>
+</div>
+
+</div>
+</section>
+
+<section id="about" class="section dark">
+
+<div class="eyebrow">CRAFT LAYER</div>
+
+<h2>A storefront built to evolve.</h2>
+
+<p class="lead">
+Products, prices, currencies, payment methods, shipping regions and collections are designed to be managed later from the merchant system rather than hard-coded into the storefront.
+</p>
+
+</section>
+
+<footer>
+
+<div>
+<div class="logo">CRAFT <span>LAYER</span></div>
+<p>3D collectibles for the next generation.</p>
+</div>
+
+<div>
+India + Worldwide<br>
+COD · Razorpay · Paytm · PayPal
+</div>
+
+</footer>
+
+<button class="cart" onclick="showCart()">
+Bag (<span id="bag">0</span>)
+</button>
+
+</div>
+
+
+<!-- CART -->
+
+<div id="cartPanel"
+style="position:fixed;top:0;right:0;width:min(420px,92vw);height:100vh;background:#101116;border-left:1px solid #292b35;z-index:100;transform:translateX(100%);transition:transform .3s ease;padding:28px;overflow:auto">
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+
+<h2 style="margin:0">Your Bag</h2>
+
+<button class="ghost" onclick="closeCart()">✕</button>
+
+</div>
+
+<div id="cartContent" style="margin-top:30px"></div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div id="admin" class="admin">
+
+<div class="admin-layout">
+
+<aside>
+
+<div class="logo">
+CRAFT <span>LAYER</span>
+<small style="display:block;color:#777;margin-top:4px">
+MERCHANT
+</small>
+</div>
+
+<button class="admin-menu active" onclick="showAdminSection('overview')">
+Overview
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('products')">
+Products
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('orders')">
+Orders
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('inventory')">
+Inventory
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('customers')">
+Customers
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('collections')">
+Collections
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('coupons')">
+Coupons
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('payments')">
+Payments
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('shipping')">
+Shipping
+</button>
+
+<button class="admin-menu" onclick="showAdminSection('analytics')">
+Analytics
+</button>
+
+<br><br>
+
+<button class="ghost" onclick="closeAdmin()">
+← Storefront
+</button>
+
+</aside>
+
+
+<main>
+
+<div class="admin-tools">
+
+<div>
+<small>MERCHANT CONSOLE</small>
+<h1>Overview</h1>
+</div>
+
+<button class="pill" onclick="openProduct()">
++ Add Product
+</button>
+
+</div>
+
+
+<div class="admin-grid">
+
+<div class="stat">
+<small>PRODUCTS</small>
+<strong id="count">0</strong>
+</div>
+
+<div class="stat">
+<small>LOW STOCK</small>
+<strong id="low">0</strong>
+</div>
+
+<div class="stat">
+<small>ORDERS</small>
+<strong id="orderCount">0</strong>
+</div>
+
+<div class="stat">
+<small>STORE</small>
+<strong>LIVE</strong>
+</div>
+
+</div>
+
+
+<table>
+
+<thead>
+
+<tr>
+<th>Product</th>
+<th>Category</th>
+<th>Price</th>
+<th>Stock</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="adminProducts"></tbody>
+
+</table>
+
+</main>
+
+</div>
+
+</div>
+
+
+<!-- PRODUCT MODAL -->
+
+<div id="productModal" class="modal">
+
+<div class="modal-box">
+
+<h2>Add Product</h2>
+
+<input id="pn" placeholder="Product name">
+
+<input id="pc" placeholder="Category">
+
+<input id="pp" type="number" placeholder="Price">
+
+<select id="pm">
+<option value="INR">INR</option>
+<option value="USD">USD</option>
+<option value="EUR">EUR</option>
+</select>
+
+<input id="ps" type="number" placeholder="Stock">
+
+<input id="pi" placeholder="Image URL">
+
+<br><br>
+
+<button class="pill" onclick="saveProduct()">
+Save Product
+</button>
+
+<button class="ghost" onclick="closeProduct()">
+Cancel
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://ijbkwhoxlfoefrxzeofz.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_4MSuYPStCRDDT0TqussTmw_jKA0e6bE";
+
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* DOM */
+
+const store = document.getElementById("store");
+const admin = document.getElementById("admin");
+const filters = document.getElementById("filters");
+const count = document.getElementById("count");
+const low = document.getElementById("low");
+const orderCount = document.getElementById("orderCount");
+const adminProducts = document.getElementById("adminProducts");
+
+const modal = document.getElementById("productModal");
+
+const pn = document.getElementById("pn");
+const pc = document.getElementById("pc");
+const pp = document.getElementById("pp");
+const pm = document.getElementById("pm");
+const ps = document.getElementById("ps");
+const pi = document.getElementById("pi");
+
+
+/* PRODUCTS */
+
+const defaults = [
 ["Cyber Nova","Anime Figures",2199,12,""],
 ["Moonblade Sentinel","Statues",3499,7,""],
 ["Neon Ronin","Anime Figures",1899,18,""],
@@ -65,342 +871,1042 @@ const defaults=[
 ["Custom Model","Custom Models",0,0,""],
 ["Chibi Guardian","Miniatures",1299,15,""]
 ];
-let savedProducts = JSON.parse(localStorage.getItem("craftLayerProducts") || "null");
+
+
+let savedProducts =
+JSON.parse(
+localStorage.getItem("craftLayerProducts") || "null"
+);
+
 
 let products = savedProducts
-  ? savedProducts.map((p,i) => ({
-      id: p.id || "product-" + i,
-      name: p.name,
-      cat: p.cat,
-      price: p.price,
-      currency: p.currency || "INR",
-      stock: p.stock,
-      image: p.image || ""
-    }))
-  : defaults.map((x,i) => ({
-      id: "product-" + i,
-      name: x[0],
-      cat: x[1],
-      price: x[2],
-      currency: "INR",
-      stock: x[3],
-      image: x[4]
-    }));
+? savedProducts.map((p,i)=>({
 
-localStorage.setItem("craftLayerProducts", JSON.stringify(products));
- 
-let bag=Number(localStorage.getItem("craftLayerBag")||0);
-function money(p){return new Intl.NumberFormat("en-IN",{style:"currency",currency:p.currency||"INR",maximumFractionDigits:0}).format(p.price)}
-function render(filter="All"){let cats=["All",...new Set(products.map(p=>p.cat))];filters.innerHTML=cats.map(c=>`<button class="filter ${c===filter?"active":""}" onclick="render('${c.replaceAll("'","")}')">${c}</button>`).join("");let list=filter==="All"?products:products.filter(p=>p.cat===filter);document.getElementById("products").innerHTML=list.map((p,i)=>`<article class="card"><div class="art"><span class="tag">${p.cat}</span>${p.image?'<img src="'+p.image+'" style="width:100%;height:100%;object-fit:cover">':'<div class="shape"></div>'}</div><div class="info"><small>${p.stock>0?"IN STOCK":"MADE TO ORDER"}</small><h3>${p.name}</h3><p>Premium 3D collectible · ${p.cat}</p><div class="price"><b>${p.price?money(p):"Custom"}</b><button class="buy" onclick="addBag(products[${products.indexOf(p)}])">Add</button></div></div></article>`).join("")}
-function addBag(product){
-  let cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+id:p.id || "product-"+i,
+name:p.name,
+cat:p.cat,
+price:p.price,
+currency:p.currency || "INR",
+stock:p.stock,
+image:p.image || ""
 
-  const existing = cart.find(item => item.id === product.id);
+}))
+: defaults.map((x,i)=>({
 
-  if(existing){
-    existing.quantity++;
-  }else{
-    cart.push({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      quantity: 1
-    });
-  }
+id:"product-"+i,
+name:x[0],
+cat:x[1],
+price:x[2],
+currency:"INR",
+stock:x[3],
+image:x[4]
 
-  localStorage.setItem("craftLayerCart", JSON.stringify(cart));
+}));
 
-  bag = cart.reduce((total, item) => total + item.quantity, 0);
-  localStorage.setItem("craftLayerBag", bag);
 
-  document.getElementById("bag").textContent = bag;
+localStorage.setItem(
+"craftLayerProducts",
+JSON.stringify(products)
+);
+
+
+let bag =
+Number(
+localStorage.getItem("craftLayerBag") || 0
+);
+
+
+function money(p){
+
+return new Intl.NumberFormat(
+"en-IN",
+{
+style:"currency",
+currency:p.currency || "INR",
+maximumFractionDigits:0
 }
-function changeQty(id, change){
-  let cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+).format(p.price);
 
-  const item = cart.find(item => item.id === id);
-
-  if(!item) return;
-
-  item.quantity += change;
-
-  if(item.quantity <= 0){
-    cart = cart.filter(item => item.id !== id);
-  }
-
-  localStorage.setItem("craftLayerCart", JSON.stringify(cart));
-
-  bag = cart.reduce((total, item) => total + item.quantity, 0);
-  localStorage.setItem("craftLayerBag", bag);
-
-  document.getElementById("bag").textContent = bag;
-
-  showCart();
-}
-function removeFromCart(id){
-  let cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
-
-  cart = cart.filter(item => item.id !== id);
-
-  localStorage.setItem("craftLayerCart", JSON.stringify(cart));
-
-  bag = cart.reduce((total, item) => total + item.quantity, 0);
-  localStorage.setItem("craftLayerBag", bag);
-
-  document.getElementById("bag").textContent = bag;
-
-  showCart();
 }
 
-function clearCart(){
-  localStorage.removeItem("craftLayerCart");
-  localStorage.removeItem("craftLayerBag");
 
-  bag = 0;
-  document.getElementById("bag").textContent = bag;
+function render(filter="All"){
 
-  showCart();
+let cats=[
+"All",
+...new Set(products.map(p=>p.cat))
+];
+
+
+filters.innerHTML =
+cats.map(c=>`
+
+<button
+class="filter ${c===filter?"active":""}"
+onclick="render('${c.replaceAll("'","")}')">
+${c}
+</button>
+
+`).join("");
+
+
+let list =
+filter==="All"
+? products
+: products.filter(p=>p.cat===filter);
+
+
+document.getElementById("products").innerHTML =
+
+list.map((p)=>`
+
+<article class="card">
+
+<div class="art">
+
+<span class="tag">
+${p.cat}
+</span>
+
+${
+p.image
+?
+'<img src="'+p.image+'" style="width:100%;height:100%;object-fit:cover">'
+:
+'<div class="shape"></div>'
 }
-function showCart(){
-  const panel = document.getElementById("cartPanel");
-  const content = document.getElementById("cartContent");
 
-  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
-
-  if(!cart.length){
-    content.innerHTML = `
-      <p>Your bag is empty.</p>
-      <button class="pill" onclick="closeCart()">Continue shopping</button>
-    `;
-  }else{
-    let total = 0;
-
-    content.innerHTML = `
-      <div class="cart-items">
-        ${cart.map(item => {
-          total += Number(item.price || 0) * item.quantity;
-
-          return `
-            <div class="cart-item">
-              <img src="${item.image || ''}" alt="${item.name}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
-              <div>
-                <strong>${item.name}</strong>
-                <p>₹${Number(item.price || 0).toLocaleString("en-IN")}</p>
-
-                <div style="display:flex;align-items:center;gap:10px;">
-  <button class="pill" onclick="changeQty('${item.id}',-1)">−</button>
-  <span>Quantity: ${item.quantity}</span>
-  <button class="pill" onclick="changeQty('${item.id}',1)">+</button>
 </div>
 
-<button class="pill" onclick="removeFromCart('${item.id}')">Remove</button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
+<div class="info">
 
-      <hr>
-<h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
+<small>
+${p.stock>0?"IN STOCK":"MADE TO ORDER"}
+</small>
 
-<button class="pill" onclick="clearCart()">Clear Bag</button>
-<button class="pill" onclick="showCheckout()">Checkout</button>
-<button class="pill" onclick="closeCart()">Continue shopping</button>
-    `;
-  }
+<h3>${p.name}</h3>
 
-  panel.style.transform = "translateX(0)";
+<p>
+Premium 3D collectible · ${p.cat}
+</p>
+
+<div class="price">
+
+<b>
+${p.price ? money(p) : "Custom"}
+</b>
+
+<button
+class="buy"
+onclick="addBag(products[${products.indexOf(p)}])">
+Add
+</button>
+
+</div>
+
+</div>
+
+</article>
+
+`).join("");
+
 }
+
+
+/* CART */
+
+function addBag(product){
+
+let cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
+
+
+const existing =
+cart.find(item=>item.id===product.id);
+
+
+if(existing){
+
+existing.quantity++;
+
+}else{
+
+cart.push({
+
+id:product.id,
+name:product.name,
+price:product.price,
+image:product.image,
+quantity:1
+
+});
+
+}
+
+
+localStorage.setItem(
+"craftLayerCart",
+JSON.stringify(cart)
+);
+
+
+bag =
+cart.reduce(
+(total,item)=>total+item.quantity,
+0
+);
+
+
+localStorage.setItem(
+"craftLayerBag",
+bag
+);
+
+
+document.getElementById("bag").textContent =
+bag;
+
+}
+
+
+function changeQty(id,change){
+
+let cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
+
+
+const item =
+cart.find(item=>item.id===id);
+
+
+if(!item)return;
+
+
+item.quantity += change;
+
+
+if(item.quantity<=0){
+
+cart =
+cart.filter(item=>item.id!==id);
+
+}
+
+
+localStorage.setItem(
+"craftLayerCart",
+JSON.stringify(cart)
+);
+
+
+bag =
+cart.reduce(
+(total,item)=>total+item.quantity,
+0
+);
+
+
+localStorage.setItem(
+"craftLayerBag",
+bag
+);
+
+
+document.getElementById("bag").textContent =
+bag;
+
+
+showCart();
+
+}
+
+
+function removeFromCart(id){
+
+let cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
+
+
+cart =
+cart.filter(item=>item.id!==id);
+
+
+localStorage.setItem(
+"craftLayerCart",
+JSON.stringify(cart)
+);
+
+
+bag =
+cart.reduce(
+(total,item)=>total+item.quantity,
+0
+);
+
+
+localStorage.setItem(
+"craftLayerBag",
+bag
+);
+
+
+document.getElementById("bag").textContent =
+bag;
+
+
+showCart();
+
+}
+
+
+function clearCart(){
+
+localStorage.removeItem("craftLayerCart");
+localStorage.removeItem("craftLayerBag");
+
+bag=0;
+
+document.getElementById("bag").textContent=bag;
+
+showCart();
+
+}
+
+
+function showCart(){
+
+const panel =
+document.getElementById("cartPanel");
+
+const content =
+document.getElementById("cartContent");
+
+
+const cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
+
+
+if(!cart.length){
+
+content.innerHTML=`
+
+<p>Your bag is empty.</p>
+
+<button
+class="pill"
+onclick="closeCart()">
+Continue shopping
+</button>
+
+`;
+
+}else{
+
+let total=0;
+
+
+content.innerHTML=`
+
+<div class="cart-items">
+
+${cart.map(item=>{
+
+total +=
+Number(item.price || 0) *
+item.quantity;
+
+
+return `
+
+<div class="cart-item">
+
+<img
+src="${item.image || ''}"
+alt="${item.name}"
+style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+
+<div>
+
+<strong>
+${item.name}
+</strong>
+
+<p>
+₹${Number(item.price || 0).toLocaleString("en-IN")}
+</p>
+
+<div
+style="display:flex;align-items:center;gap:10px;">
+
+<button
+class="pill"
+onclick="changeQty('${item.id}',-1)">
+−
+</button>
+
+<span>
+Quantity: ${item.quantity}
+</span>
+
+<button
+class="pill"
+onclick="changeQty('${item.id}',1)">
++
+</button>
+
+</div>
+
+<button
+class="pill"
+onclick="removeFromCart('${item.id}')">
+Remove
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}).join("")}
+
+</div>
+
+<hr>
+
+<h3>
+Total: ₹${total.toLocaleString("en-IN")}
+</h3>
+
+<button
+class="pill"
+onclick="clearCart()">
+Clear Bag
+</button>
+
+<button
+class="pill"
+onclick="showCheckout()">
+Checkout
+</button>
+
+<button
+class="pill"
+onclick="closeCart()">
+Continue shopping
+</button>
+
+`;
+
+}
+
+
+panel.style.transform =
+"translateX(0)";
+
+}
+
+
+/* CHECKOUT */
+
 function showCheckout(){
-  const panel = document.getElementById("cartPanel");
-  const content = document.getElementById("cartContent");
 
-  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+const panel =
+document.getElementById("cartPanel");
 
-  if(!cart.length){
-    content.innerHTML = `
-      <p>Your bag is empty.</p>
-      <button class="pill" onclick="closeCart()">Continue shopping</button>
-    `;
-    return;
-  }
+const content =
+document.getElementById("cartContent");
 
-  let total = 0;
 
-  cart.forEach(item => {
-    total += Number(item.price || 0) * item.quantity;
-  });
+const cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
 
-  content.innerHTML = `
-    <h2>Checkout</h2>
 
-    <form onsubmit="placeOrder(event)">
-      <input id="customerName" required placeholder="Full Name">
-      <input id="customerEmail" type="email" required placeholder="Email">
-      <input id="customerPhone" required placeholder="Phone Number">
+if(!cart.length){
 
-      <input id="customerAddress" required placeholder="Address">
-      <input id="customerCity" required placeholder="City">
-      <input id="customerState" required placeholder="State">
-      <input id="customerPin" required placeholder="PIN Code">
+content.innerHTML=`
 
-      <select id="paymentMethod" required>
-        <option value="">Select Payment Method</option>
-        <option value="COD">Cash on Delivery</option>
-        <option value="Razorpay">Razorpay</option>
-        <option value="Paytm">Paytm</option>
-        <option value="PayPal">PayPal</option>
-      </select>
+<p>Your bag is empty.</p>
 
-      <h3>Total: ₹${total.toLocaleString("en-IN")}</h3>
+<button
+class="pill"
+onclick="closeCart()">
+Continue shopping
+</button>
 
-      <button class="pill" type="submit">Place Order</button>
-      <button class="pill" type="button" onclick="showCart()">Back to Bag</button>
-    </form>
-  `;
+`;
 
-  panel.style.transform = "translateX(0)";
+return;
+
 }
+
+
+let total=0;
+
+
+cart.forEach(item=>{
+
+total +=
+Number(item.price || 0) *
+item.quantity;
+
+});
+
+
+content.innerHTML=`
+
+<h2>Checkout</h2>
+
+<form onsubmit="placeOrder(event)">
+
+<input
+id="customerName"
+required
+placeholder="Full Name">
+
+<input
+id="customerEmail"
+type="email"
+required
+placeholder="Email">
+
+<input
+id="customerPhone"
+required
+placeholder="Phone Number">
+
+<input
+id="customerAddress"
+required
+placeholder="Address">
+
+<input
+id="customerCity"
+required
+placeholder="City">
+
+<input
+id="customerState"
+required
+placeholder="State">
+
+<input
+id="customerPin"
+required
+placeholder="PIN Code">
+
+<select id="paymentMethod" required>
+
+<option value="">
+Select Payment Method
+</option>
+
+<option value="COD">
+Cash on Delivery
+</option>
+
+<option value="Razorpay">
+Razorpay
+</option>
+
+<option value="Paytm">
+Paytm
+</option>
+
+<option value="PayPal">
+PayPal
+</option>
+
+</select>
+
+<h3>
+Total: ₹${total.toLocaleString("en-IN")}
+</h3>
+
+<button
+class="pill"
+type="submit">
+Place Order
+</button>
+
+<button
+class="pill"
+type="button"
+onclick="showCart()">
+Back to Bag
+</button>
+
+</form>
+
+`;
+
+
+panel.style.transform =
+"translateX(0)";
+
+}
+
+
+/* PLACE ORDER */
+
 async function placeOrder(event){
-  event.preventDefault();
 
-  const cart = JSON.parse(localStorage.getItem("craftLayerCart") || "[]");
+event.preventDefault();
 
-  if(!cart.length){
-    alert("Your bag is empty.");
-    return;
-  }
 
-  const total = cart.reduce(
-    (sum, item) => sum + Number(item.price || 0) * item.quantity,
-    0
-  );
+const cart =
+JSON.parse(
+localStorage.getItem("craftLayerCart") || "[]"
+);
 
-  const order = {
-    id: crypto.randomUUID(),
 
-    customer_name: document.getElementById("customerName").value,
-    customer_email: document.getElementById("customerEmail").value,
-    customer_phone: document.getElementById("customerPhone").value,
+if(!cart.length){
 
-    shipping_address:
-      document.getElementById("customerAddress").value,
+alert("Your bag is empty.");
 
-    city: document.getElementById("customerCity").value,
-    state: document.getElementById("customerState").value,
-    pin: document.getElementById("customerPin").value,
+return;
 
-    payment_method:
-      document.getElementById("paymentMethod").value,
-
-    items: cart,
-    total: total
-  };
-
-  const { error } = await supabaseClient
-    .from("orders")
-    .insert([order]);
-
-  if(error){
-    console.error("Order error:", error);
-    alert("Sorry, your order could not be placed.");
-    return;
-  }
-
-  localStorage.removeItem("craftLayerCart");
-  localStorage.removeItem("craftLayerBag");
-
-  bag = 0;
-  document.getElementById("bag").textContent = "0";
-
-  const content = document.getElementById("cartContent");
-
-  content.innerHTML = `
-    <h2>Order Placed 🎉</h2>
-    <p>Order ID: <strong>${order.id}</strong></p>
-    <p>Thank you, ${order.customer_name}!</p>
-    <p>Total: <strong>₹${order.total.toLocaleString("en-IN")}</strong></p>
-    <button class="pill" onclick="closeCart()">Continue Shopping</button>
-  `;
 }
+
+
+const total =
+cart.reduce(
+(sum,item)=>
+sum+
+Number(item.price || 0)*
+item.quantity,
+0
+);
+
+
+const order={
+
+id:crypto.randomUUID(),
+
+customer_name:
+document.getElementById("customerName").value,
+
+customer_email:
+document.getElementById("customerEmail").value,
+
+customer_phone:
+document.getElementById("customerPhone").value,
+
+shipping_address:
+document.getElementById("customerAddress").value,
+
+city:
+document.getElementById("customerCity").value,
+
+state:
+document.getElementById("customerState").value,
+
+pin:
+document.getElementById("customerPin").value,
+
+payment_method:
+document.getElementById("paymentMethod").value,
+
+items:cart,
+
+total:total
+
+};
+
+
+const {error} =
+await supabaseClient
+.from("orders")
+.insert([order]);
+
+
+if(error){
+
+console.error("Order error:",error);
+
+alert(
+"Sorry, your order could not be placed."
+);
+
+return;
+
+}
+
+
+localStorage.removeItem(
+"craftLayerCart"
+);
+
+localStorage.removeItem(
+"craftLayerBag"
+);
+
+
+bag=0;
+
+document.getElementById("bag").textContent="0";
+
+
+const content =
+document.getElementById("cartContent");
+
+
+content.innerHTML=`
+
+<h2>Order Placed 🎉</h2>
+
+<p>
+Order ID:
+<strong>${order.id}</strong>
+</p>
+
+<p>
+Thank you, ${order.customer_name}!
+</p>
+
+<p>
+Total:
+<strong>
+₹${order.total.toLocaleString("en-IN")}
+</strong>
+</p>
+
+<button
+class="pill"
+onclick="closeCart()">
+Continue Shopping
+</button>
+
+`;
+
+}
+
+
+/* NAVIGATION */
+
 function closeCart(){
-  document.getElementById("cartPanel").style.transform = "translateX(100%)";
+
+document.getElementById("cartPanel")
+.style.transform="translateX(100%)";
+
 }
-function scrollShop(){document.getElementById("shop").scrollIntoView({behavior:"smooth"})}
+
+
+function scrollShop(){
+
+document
+.getElementById("shop")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+
+/* ADMIN */
+
 function showAdminSection(section){
 
-  if(section === "overview"){
-    renderAdmin();
-    return;
-  }
+if(section==="overview"){
 
-  if(section === "products"){
-    renderAdmin();
-    return;
-  }
+renderAdmin();
 
-  if(section === "orders"){
-    showAdminOrders();
-    return;
-  }
+return;
 
-  alert(section.charAt(0).toUpperCase() + section.slice(1) + " section coming next.");
 }
+
+
+if(section==="products"){
+
+renderAdmin();
+
+return;
+
+}
+
+
+if(section==="orders"){
+
+showAdminOrders();
+
+return;
+
+}
+
+
+alert(
+section.charAt(0).toUpperCase()+
+section.slice(1)+
+" section coming next."
+);
+
+}
+
 
 async function showAdminOrders(){
 
-  const main = document.querySelector("#admin main");
+const main =
+document.querySelector("#admin main");
 
-  main.innerHTML = `
-    <div class="admin-tools">
-      <div>
-        <small>MERCHANT CONSOLE</small>
-        <h1>Orders</h1>
-      </div>
-    </div>
 
-    <div id="ordersList">
-      Loading orders...
-    </div>
-  `;
+main.innerHTML=`
 
-  const { data, error } = await supabaseClient
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending:false });
+<div class="admin-tools">
 
-  if(error){
-    document.getElementById("ordersList").innerHTML =
-      "<p>Could not load orders.</p>";
-    console.error(error);
-    return;
-  }
+<div>
 
-  if(!data.length){
-    document.getElementById("ordersList").innerHTML =
-      "<p>No orders yet.</p>";
-    return;
-  }
+<small>
+MERCHANT CONSOLE
+</small>
 
-  document.getElementById("ordersList").innerHTML = data.map(order => `
-    <div class="stat" style="margin-bottom:15px">
-      <strong>Order ${order.id}</strong>
-      <p>Customer: ${order.customer_name}</p>
-      <p>Email: ${order.customer_email}</p>
-      <p>Address: ${order.shipping_address}</p>
-      <p>Total: ₹${Number(order.total).toLocaleString("en-IN")}</p>
-      <p>Status: ${order.status}</p>
-    </div>
-  `).join("");
+<h1>Orders</h1>
+
+</div>
+
+</div>
+
+<div id="ordersList">
+Loading orders...
+</div>
+
+`;
+
+
+const {data,error} =
+await supabaseClient
+.from("orders")
+.select("*")
+.order(
+"created_at",
+{ascending:false}
+);
+
+
+if(error){
+
+document.getElementById("ordersList")
+.innerHTML=
+"<p>Could not load orders.</p>";
+
+console.error(error);
+
+return;
+
 }
-function openAdmin(){store.style.display="none";admin.style.display="block";renderAdmin()}
-function closeAdmin(){admin.style.display="none";store.style.display="block"}
-function renderAdmin(){count.textContent=products.length;low.textContent=products.filter(p=>p.stock>0&&p.stock<=5).length;adminProducts.innerHTML=products.map((p,i)=>`<tr><td><b>${p.name}</b></td><td>${p.cat}</td><td>${p.price?money(p):"Custom"}</td><td>${p.stock}</td><td><button class="ghost" onclick="delProduct(${i})">Delete</button></td></tr>`).join("")}
-function openProduct(){modal.style.display="grid"}function closeProduct(){modal.style.display="none"}
-function saveProduct(){products.push({name:pn.value||"Untitled Model",cat:pc.value||"Collectibles",price:Number(pp.value)||0,currency:pm.value,stock:Number(ps.value)||0,image:pi.value||""});localStorage.setItem("craftLayerProducts",JSON.stringify(products));closeProduct();renderAdmin();render()}
-function delProduct(i){products.splice(i,1);localStorage.setItem("craftLayerProducts",JSON.stringify(products));renderAdmin();render()}
-document.getElementById("bag").textContent=bag;render();
+
+
+if(!data.length){
+
+document.getElementById("ordersList")
+.innerHTML=
+"<p>No orders yet.</p>";
+
+return;
+
+}
+
+
+document.getElementById("ordersList")
+.innerHTML=
+
+data.map(order=>`
+
+<div
+class="stat"
+style="margin-bottom:15px">
+
+<strong>
+Order ${order.id}
+</strong>
+
+<p>
+Customer:
+${order.customer_name}
+</p>
+
+<p>
+Email:
+${order.customer_email}
+</p>
+
+<p>
+Address:
+${order.shipping_address}
+</p>
+
+<p>
+Total:
+₹${Number(order.total)
+.toLocaleString("en-IN")}
+</p>
+
+<p>
+Status:
+${order.status}
+</p>
+
+</div>
+
+`).join("");
+
+}
+
+
+function openAdmin(){
+
+store.style.display="none";
+
+admin.style.display="block";
+
+renderAdmin();
+
+}
+
+
+function closeAdmin(){
+
+admin.style.display="none";
+
+store.style.display="block";
+
+}
+
+
+function renderAdmin(){
+
+count.textContent=
+products.length;
+
+
+low.textContent=
+products.filter(
+p=>p.stock>0&&p.stock<=5
+).length;
+
+
+adminProducts.innerHTML=
+
+products.map((p,i)=>`
+
+<tr>
+
+<td>
+<b>${p.name}</b>
+</td>
+
+<td>
+${p.cat}
+</td>
+
+<td>
+${p.price ? money(p) : "Custom"}
+</td>
+
+<td>
+${p.stock}
+</td>
+
+<td>
+
+<button
+class="ghost"
+onclick="delProduct(${i})">
+Delete
+</button>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+
+function openProduct(){
+
+modal.style.display="grid";
+
+}
+
+
+function closeProduct(){
+
+modal.style.display="none";
+
+}
+
+
+function saveProduct(){
+
+products.push({
+
+name:pn.value || "Untitled Model",
+
+cat:pc.value || "Collectibles",
+
+price:Number(pp.value) || 0,
+
+currency:pm.value,
+
+stock:Number(ps.value) || 0,
+
+image:pi.value || ""
+
+});
+
+
+localStorage.setItem(
+"craftLayerProducts",
+JSON.stringify(products)
+);
+
+
+closeProduct();
+
+renderAdmin();
+
+render();
+
+}
+
+
+function delProduct(i){
+
+products.splice(i,1);
+
+
+localStorage.setItem(
+"craftLayerProducts",
+JSON.stringify(products)
+);
+
+
+renderAdmin();
+
+render();
+
+}
+
+
+/* START */
+
+document.getElementById("bag")
+.textContent=bag;
+
+render();
+
 </script>
-</body></html>
+
+</body>
+</html>
