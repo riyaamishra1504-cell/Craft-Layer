@@ -2657,36 +2657,23 @@ async function loadOrderCount(){
 async function showAdminOrders(){
 
   const main =
-    document.querySelector(
-      "#admin main"
-    );
+    document.querySelector("#admin main");
 
-
-  if(!main)
-    return;
-
+  if(!main) return;
 
   main.innerHTML = `
 
     <div class="admin-tools">
 
       <div>
+        <small>MERCHANT CONSOLE</small>
 
-        <small>
-          MERCHANT CONSOLE
-        </small>
-
-        <h1>
-          Orders
-        </h1>
+        <h1>Orders</h1>
 
         <p style="opacity:.6">
-          Manage customer orders
-          and update their status.
+          Manage customer orders and update their status.
         </p>
-
       </div>
-
 
       <button
         class="ghost"
@@ -2698,61 +2685,58 @@ async function showAdminOrders(){
 
     </div>
 
-
     <div
       id="ordersList"
-      style="margin-top:25px"
-    >
+      style="margin-top:25px">
 
       <div class="stat">
-
-        <p>
-          Loading orders...
-        </p>
-
+        <p>Loading orders...</p>
       </div>
 
     </div>
 
   `;
 
-
   const ordersList =
-    document.getElementById(
-      "ordersList"
-    );
+    document.getElementById("ordersList");
 
-
-  const { data,error } =
+  const { data, error } =
     await supabaseClient
       .from("orders")
       .select("*")
-      .order(
-        "created_at",
-        {
-          ascending:false
-        }
-      );
-
+      .order("created_at", {
+        ascending:false
+      });
 
   if(error){
 
-    console.error(
-      "Orders error:",
-      error
-    );
-
+    console.error("Orders error:", error);
 
     ordersList.innerHTML = `
 
       <div class="stat">
 
-        <h3>
-          Could not load orders
-        </h3>
+        <h3>Could not load orders</h3>
+
+        <p>${error.message}</p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  if(!data || data.length === 0){
+
+    ordersList.innerHTML = `
+
+      <div class="stat">
+
+        <h3>No orders yet</h3>
 
         <p>
-          ${error.message}
+          Customer orders will appear here after checkout.
         </p>
 
       </div>
@@ -2760,54 +2744,164 @@ async function showAdminOrders(){
     `;
 
     return;
-
   }
-
-
-  if(
-    !data ||
-    data.length === 0
-  ){
-
-    ordersList.innerHTML = `
-
-      <div class="stat">
-
-        <h3>
-          No orders yet
-        </h3>
-
-        <p>
-          Customer orders will
-          appear here after checkout.
-        </p>
-
-      </div>
-
-    `;
-
-    return;
-
-  }
-
 
   ordersList.innerHTML =
     data.map(order => {
 
-      const status =
-        order.status ||
-        "Pending";
+      /* ================= STATUS ================= */
 
+      const rawStatus =
+        String(order.status || "Pending")
+          .toLowerCase();
+
+      const statusMap = {
+        pending: "Pending",
+        confirmed: "Confirmed",
+        shipped: "Shipped",
+        delivered: "Delivered",
+        cancelled: "Cancelled"
+      };
+
+      const status =
+        statusMap[rawStatus] || "Pending";
+
+
+      /* ================= DATE ================= */
 
       const date =
         order.created_at
-          ? new Date(
-              order.created_at
-            ).toLocaleString(
-              "en-IN"
-            )
+          ? new Date(order.created_at)
+              .toLocaleString("en-IN")
           : "Unknown date";
 
+
+      /* ================= ITEMS ================= */
+
+      let items = order.items || [];
+
+      /*
+        Supabase JSON/JSONB normally returns an array.
+        This also handles it if it comes back as text.
+      */
+
+      if(typeof items === "string"){
+
+        try{
+          items = JSON.parse(items);
+        }catch(e){
+          items = [];
+        }
+
+      }
+
+      if(!Array.isArray(items)){
+        items = [];
+      }
+
+
+      const itemsHTML =
+        items.length > 0
+
+        ? items.map(item => {
+
+            const name =
+              item.name ||
+              "Unnamed Product";
+
+            const price =
+              Number(item.price || 0);
+
+            const qty =
+              Number(item.qty || item.quantity || 1);
+
+            const image =
+              item.image || "";
+
+            return `
+
+              <div
+                style="
+                  display:flex;
+                  align-items:center;
+                  gap:15px;
+                  padding:12px 0;
+                  border-bottom:1px solid rgba(255,255,255,.08);
+                "
+              >
+
+                ${
+                  image
+                    ? `
+                      <img
+                        src="${image}"
+                        alt="${name}"
+                        style="
+                          width:65px;
+                          height:65px;
+                          object-fit:cover;
+                          border-radius:10px;
+                          background:#111;
+                        "
+                      >
+                    `
+                    : `
+                      <div
+                        style="
+                          width:65px;
+                          height:65px;
+                          border-radius:10px;
+                          background:#111;
+                          display:flex;
+                          align-items:center;
+                          justify-content:center;
+                          opacity:.5;
+                        "
+                      >
+                        📦
+                      </div>
+                    `
+                }
+
+                <div style="flex:1">
+
+                  <strong>
+                    ${name}
+                  </strong>
+
+                  <div
+                    style="
+                      opacity:.6;
+                      margin-top:4px;
+                    "
+                  >
+                    Qty: ${qty} ×
+                    ₹${price.toLocaleString("en-IN")}
+                  </div>
+
+                </div>
+
+                <strong>
+                  ₹${(price * qty)
+                    .toLocaleString("en-IN")}
+                </strong>
+
+              </div>
+
+            `;
+
+          }).join("")
+
+        : `
+
+          <p style="opacity:.5">
+            Product information not available for this order.
+          </p>
+
+        `;
+
+
+      /* ================= ORDER CARD ================= */
 
       return `
 
@@ -2818,6 +2912,8 @@ async function showAdminOrders(){
             padding:22px;
           "
         >
+
+          <!-- HEADER -->
 
           <div
             style="
@@ -2831,15 +2927,10 @@ async function showAdminOrders(){
 
             <div>
 
-              <small>
-                ORDER
-              </small>
+              <small>ORDER</small>
 
-              <h3
-                style="margin:5px 0">
-
+              <h3 style="margin:5px 0">
                 #${order.id}
-
               </h3>
 
               <small>
@@ -2851,14 +2942,14 @@ async function showAdminOrders(){
 
             <div>
 
-              <strong>
-
+              <strong
+                style="
+                  font-size:20px;
+                "
+              >
                 ₹${Number(
                   order.total || 0
-                ).toLocaleString(
-                  "en-IN"
-                )}
-
+                ).toLocaleString("en-IN")}
               </strong>
 
             </div>
@@ -2874,11 +2965,11 @@ async function showAdminOrders(){
           >
 
 
+          <!-- CUSTOMER -->
+
           <p>
 
-            <strong>
-              Customer
-            </strong>
+            <strong>Customer</strong>
 
             <br>
 
@@ -2892,9 +2983,7 @@ async function showAdminOrders(){
 
           <p>
 
-            <strong>
-              Email
-            </strong>
+            <strong>Email</strong>
 
             <br>
 
@@ -2908,9 +2997,7 @@ async function showAdminOrders(){
 
           <p>
 
-            <strong>
-              Phone
-            </strong>
+            <strong>Phone</strong>
 
             <br>
 
@@ -2924,9 +3011,7 @@ async function showAdminOrders(){
 
           <p>
 
-            <strong>
-              Shipping Address
-            </strong>
+            <strong>Shipping Address</strong>
 
             <br>
 
@@ -2940,9 +3025,7 @@ async function showAdminOrders(){
 
           <p>
 
-            <strong>
-              Payment
-            </strong>
+            <strong>Payment</strong>
 
             <br>
 
@@ -2953,6 +3036,53 @@ async function showAdminOrders(){
 
           </p>
 
+
+          <!-- ITEMS -->
+
+          <div
+            style="
+              margin-top:22px;
+            "
+          >
+
+            <h3 style="margin-bottom:10px">
+              Items
+            </h3>
+
+            <div>
+              ${itemsHTML}
+            </div>
+
+          </div>
+
+
+          <!-- TOTAL -->
+
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              margin-top:18px;
+              padding-top:15px;
+              border-top:1px solid rgba(255,255,255,.12);
+            "
+          >
+
+            <strong>
+              Order Total
+            </strong>
+
+            <strong style="font-size:18px">
+              ₹${Number(
+                order.total || 0
+              ).toLocaleString("en-IN")}
+            </strong>
+
+          </div>
+
+
+          <!-- STATUS -->
 
           <div
             style="
@@ -2990,59 +3120,35 @@ async function showAdminOrders(){
 
               <option
                 value="Pending"
-                ${
-                  status === "Pending"
-                    ? "selected"
-                    : ""
-                }
+                ${status === "Pending" ? "selected" : ""}
               >
                 Pending
               </option>
 
-
               <option
                 value="Confirmed"
-                ${
-                  status === "Confirmed"
-                    ? "selected"
-                    : ""
-                }
+                ${status === "Confirmed" ? "selected" : ""}
               >
                 Confirmed
               </option>
 
-
               <option
                 value="Shipped"
-                ${
-                  status === "Shipped"
-                    ? "selected"
-                    : ""
-                }
+                ${status === "Shipped" ? "selected" : ""}
               >
                 Shipped
               </option>
 
-
               <option
                 value="Delivered"
-                ${
-                  status === "Delivered"
-                    ? "selected"
-                    : ""
-                }
+                ${status === "Delivered" ? "selected" : ""}
               >
                 Delivered
               </option>
 
-
               <option
                 value="Cancelled"
-                ${
-                  status === "Cancelled"
-                    ? "selected"
-                    : ""
-                }
+                ${status === "Cancelled" ? "selected" : ""}
               >
                 Cancelled
               </option>
@@ -3060,6 +3166,7 @@ async function showAdminOrders(){
 }
 
 
+/* ================= UPDATE ORDER STATUS ================= */
 /* ================= UPDATE ORDER STATUS ================= */
 
 async function updateOrderStatus(
