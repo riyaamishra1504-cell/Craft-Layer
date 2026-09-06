@@ -3315,7 +3315,91 @@ function saveProduct(){
   render();
 
 }
+/* ================= LOAD PRODUCTS FROM SUPABASE ================= */
 
+async function loadProductsFromSupabase(){
+
+  const { data, error } =
+    await supabaseClient
+      .from("products")
+      .select("*")
+      .order("created_at", {
+        ascending:true
+      });
+
+  if(error){
+
+    console.error(
+      "Products loading error:",
+      error
+    );
+
+    return;
+
+  }
+
+  if(!data || data.length === 0){
+
+    console.warn(
+      "No products found in Supabase."
+    );
+
+    return;
+
+  }
+
+  products = data.map(p => ({
+
+    id:
+      p.id,
+
+    name:
+      p.name,
+
+    cat:
+      p.category,
+
+    price:
+      Number(p.price) || 0,
+
+    currency:
+      "INR",
+
+    stock:
+      Number(p.stock) || 0,
+
+    image:
+      p.image_url || ""
+
+  }));
+
+
+  /* Keep localStorage synchronized */
+
+  localStorage.setItem(
+    "craftLayerProducts",
+    JSON.stringify(products)
+  );
+
+
+  /* Refresh storefront */
+
+  if(typeof render === "function"){
+    render();
+  }
+
+
+  /* Refresh admin if currently open */
+
+  if(
+    typeof renderAdmin === "function" &&
+    admin &&
+    admin.style.display !== "none"
+  ){
+    renderAdmin();
+  }
+
+}
 
 /* ================= DELETE PRODUCT ================= */
 
@@ -3348,7 +3432,7 @@ document.getElementById(
 
 render();
 
-</script>
+/* Load products from Supabase */
+loadProductsFromSupabase();
 
-</body>
-</html>
+</script>
