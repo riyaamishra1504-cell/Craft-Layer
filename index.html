@@ -2583,17 +2583,26 @@ function renderAdmin(
           ${p.stock}
         </td>
 
-        <td>
+      <td>
 
-          <button
-            class="ghost"
-            onclick="delProduct(${i})">
+  <button
+    class="ghost"
+    onclick="editProduct(${i})">
 
-            Delete
+    Edit
 
-          </button>
+  </button>
 
-        </td>
+  <button
+    class="ghost"
+    onclick="delProduct(${i})"
+    style="margin-left:6px">
+
+    Delete
+
+  </button>
+
+</td>
 
       </tr>
 
