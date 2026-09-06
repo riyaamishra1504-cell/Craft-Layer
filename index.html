@@ -3514,27 +3514,62 @@ async function editProduct(i){
 }
 /* ================= DELETE PRODUCT ================= */
 
-function delProduct(i){
+async function delProduct(i){
 
-  products.splice(
-    i,
-    1
+  const product = products[i];
+
+  if(!product){
+    alert("Product not found.");
+    return;
+  }
+
+  const confirmDelete = confirm(
+    `Delete "${product.name}"?`
   );
 
+  if(!confirmDelete){
+    return;
+  }
 
-  localStorage.setItem(
-    "craftLayerProducts",
-    JSON.stringify(products)
+
+  /* ================= DELETE FROM SUPABASE ================= */
+
+  const { error } =
+    await supabaseClient
+      .from("products")
+      .delete()
+      .eq("id", product.id);
+
+
+  if(error){
+
+    console.error(
+      "Product delete error:",
+      error
+    );
+
+    alert(
+      "Could not delete product.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+
+  /* ================= RELOAD PRODUCTS ================= */
+
+  alert(
+    "Product deleted successfully!"
   );
 
+  await loadProductsFromSupabase();
 
-  renderAdmin();
+  renderAdmin("products");
 
   render();
 
 }
-
-
 /* ================= INITIALIZE ================= */
 
 document.getElementById(
