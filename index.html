@@ -3,2003 +3,3241 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>CRAFT LAYER — 3D Collectibles</title>
+
 <meta name="description" content="CRAFT LAYER — futuristic 3D printed anime collectibles and custom models.">
 
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root{
---bg:#07070a;
---panel:#101116;
---line:#292b35;
---text:#f6f5f2;
---muted:#9b9da8;
---accent:#a9ff36;
---purple:#7b5cff
+  --bg:#07070a;
+  --panel:#101116;
+  --line:#292b35;
+  --text:#f6f5f2;
+  --muted:#9b9da8;
+  --accent:#a9ff36;
+  --purple:#7b5cff;
 }
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
 body{
-margin:0;
-background:var(--bg);
-color:var(--text);
-font-family:Inter,sans-serif
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,sans-serif;
 }
 
-button,input,select{font:inherit}
-button{cursor:pointer}
+button,input,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
 
 .nav{
-height:76px;
-border-bottom:1px solid var(--line);
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 5%;
-position:sticky;
-top:0;
-background:#07070add;
-backdrop-filter:blur(18px);
-z-index:20
+  height:76px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  position:sticky;
+  top:0;
+  background:#07070add;
+  backdrop-filter:blur(18px);
+  z-index:20;
 }
 
 .logo{
-font:700 21px "Space Grotesk";
-letter-spacing:-1px
+  font:700 21px "Space Grotesk";
+  letter-spacing:-1px;
 }
 
-.logo span{color:var(--accent)}
+.logo span{
+  color:var(--accent);
+}
 
 nav{
-display:flex;
-gap:26px
+  display:flex;
+  gap:26px;
 }
 
 nav a{
-color:#bbb;
-text-decoration:none;
-font-size:14px
+  color:#bbb;
+  text-decoration:none;
+  font-size:14px;
 }
 
 .nav-actions{
-display:flex;
-gap:8px
+  display:flex;
+  gap:8px;
 }
 
-.pill,.ghost{
-border:1px solid var(--line);
-background:#101116;
-color:#eee;
-border-radius:999px;
-padding:10px 15px
+.pill,
+.ghost{
+  border:1px solid var(--line);
+  background:#101116;
+  color:#eee;
+  border-radius:999px;
+  padding:10px 15px;
 }
 
 .pill{
-background:var(--accent);
-color:#07070a;
-border-color:var(--accent);
-font-weight:700
+  background:var(--accent);
+  color:#07070a;
+  border-color:var(--accent);
+  font-weight:700;
 }
 
 .hero{
-min-height:650px;
-padding:90px 8%;
-display:grid;
-grid-template-columns:1.1fr .9fr;
-align-items:center;
-background:radial-gradient(circle at 75% 15%,#211445 0,transparent 32%)
+  min-height:650px;
+  padding:90px 8%;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  align-items:center;
+  background:radial-gradient(
+    circle at 75% 15%,
+    #211445 0,
+    transparent 32%
+  );
 }
 
 .eyebrow{
-color:var(--accent);
-font-size:11px;
-letter-spacing:2.5px;
-font-weight:700
+  color:var(--accent);
+  font-size:11px;
+  letter-spacing:2.5px;
+  font-weight:700;
 }
 
 .hero h1{
-font:600 clamp(48px,7vw,92px)/.92 "Space Grotesk";
-letter-spacing:-5px;
-margin:18px 0
+  font:600 clamp(48px,7vw,92px)/.92 "Space Grotesk";
+  letter-spacing:-5px;
+  margin:18px 0;
 }
 
 .hero h1 em{
-font-style:normal;
-color:#777b88
+  font-style:normal;
+  color:#777b88;
 }
 
 .lead{
-color:#a5a6af;
-max-width:560px;
-line-height:1.7;
-font-size:17px
+  color:#a5a6af;
+  max-width:560px;
+  line-height:1.7;
+  font-size:17px;
 }
 
 .hero-art{
-height:430px;
-position:relative;
-display:grid;
-place-items:center
+  height:430px;
+  position:relative;
+  display:grid;
+  place-items:center;
 }
 
 .ring{
-position:absolute;
-width:330px;
-height:330px;
-border:1px solid #45475a;
-border-radius:50%;
-box-shadow:0 0 80px #7b5cff33
+  position:absolute;
+  width:330px;
+  height:330px;
+  border:1px solid #45475a;
+  border-radius:50%;
+  box-shadow:0 0 80px #7b5cff33;
 }
 
 .core{
-width:210px;
-height:280px;
-border-radius:45% 45% 20% 20%;
-background:linear-gradient(145deg,#555867,#101116);
-transform:rotate(-9deg);
-box-shadow:35px 35px 70px #000
+  width:210px;
+  height:280px;
+  border-radius:45% 45% 20% 20%;
+  background:linear-gradient(145deg,#555867,#101116);
+  transform:rotate(-9deg);
+  box-shadow:35px 35px 70px #000;
 }
 
 .core:after{
-content:"";
-display:block;
-width:60px;
-height:60px;
-border:2px solid var(--accent);
-border-radius:50%;
-margin:65px auto;
-box-shadow:0 0 30px #a9ff3688
+  content:"";
+  display:block;
+  width:60px;
+  height:60px;
+  border:2px solid var(--accent);
+  border-radius:50%;
+  margin:65px auto;
+  box-shadow:0 0 30px #a9ff3688;
 }
 
 .hero-badge{
-position:absolute;
-right:5%;
-bottom:30px;
-border:1px solid var(--line);
-background:#101116cc;
-padding:14px 17px;
-border-radius:12px;
-font-size:12px;
-color:#aaa
+  position:absolute;
+  right:5%;
+  bottom:30px;
+  border:1px solid var(--line);
+  background:#101116cc;
+  padding:14px 17px;
+  border-radius:12px;
+  font-size:12px;
+  color:#aaa;
 }
 
 .section{
-padding:90px 7%
+  padding:90px 7%;
 }
 
 .section-head{
-display:flex;
-justify-content:space-between;
-align-items:end;
-margin-bottom:32px
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:32px;
 }
 
 .section h2{
-font:500 48px "Space Grotesk";
-letter-spacing:-2px;
-margin:8px 0
+  font:500 48px "Space Grotesk";
+  letter-spacing:-2px;
+  margin:8px 0;
 }
 
 .filters{
-display:flex;
-gap:8px;
-flex-wrap:wrap
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
 
 .filter{
-border:1px solid var(--line);
-background:transparent;
-color:#aaa;
-border-radius:999px;
-padding:9px 14px
+  border:1px solid var(--line);
+  background:transparent;
+  color:#aaa;
+  border-radius:999px;
+  padding:9px 14px;
 }
 
 .filter.active{
-color:#07070a;
-background:var(--accent);
-border-color:var(--accent)
+  color:#07070a;
+  background:var(--accent);
+  border-color:var(--accent);
 }
 
 .grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:16px
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
 }
 
 .card{
-background:linear-gradient(145deg,#111217,#0b0c10);
-border:1px solid var(--line);
-border-radius:16px;
-overflow:hidden;
-transition:.25s
+  background:linear-gradient(145deg,#111217,#0b0c10);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.25s;
 }
 
 .card:hover{
-transform:translateY(-5px);
-border-color:#555
+  transform:translateY(-5px);
+  border-color:#555;
 }
 
 .art{
-height:250px;
-background:radial-gradient(circle at 50% 40%,#2b2348,#12131a 60%);
-display:grid;
-place-items:center;
-position:relative
+  height:250px;
+  background:radial-gradient(
+    circle at 50% 40%,
+    #2b2348,
+    #12131a 60%
+  );
+  display:grid;
+  place-items:center;
+  position:relative;
 }
 
 .shape{
-width:100px;
-height:150px;
-border-radius:45% 45% 25% 25%;
-background:linear-gradient(145deg,#777b8b,#1d1e25);
-box-shadow:20px 20px 40px #000;
-transform:rotate(-6deg)
+  width:100px;
+  height:150px;
+  border-radius:45% 45% 25% 25%;
+  background:linear-gradient(145deg,#777b8b,#1d1e25);
+  box-shadow:20px 20px 40px #000;
+  transform:rotate(-6deg);
 }
 
 .shape:after{
-content:"";
-display:block;
-width:26px;
-height:26px;
-border-radius:50%;
-background:var(--accent);
-margin:35px auto;
-box-shadow:0 0 25px var(--accent)
+  content:"";
+  display:block;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:var(--accent);
+  margin:35px auto;
+  box-shadow:0 0 25px var(--accent);
 }
 
 .tag{
-position:absolute;
-left:12px;
-top:12px;
-background:#07070acc;
-border:1px solid var(--line);
-padding:6px 9px;
-border-radius:7px;
-font-size:9px;
-letter-spacing:1px
+  position:absolute;
+  left:12px;
+  top:12px;
+  background:#07070acc;
+  border:1px solid var(--line);
+  padding:6px 9px;
+  border-radius:7px;
+  font-size:9px;
+  letter-spacing:1px;
+  z-index:2;
 }
 
 .info{
-padding:17px
+  padding:17px;
 }
 
 .info small{
-color:#777;
-font-size:10px;
-letter-spacing:1.3px
+  color:#777;
+  font-size:10px;
+  letter-spacing:1.3px;
 }
 
 .info h3{
-font:500 20px "Space Grotesk";
-margin:7px 0
+  font:500 20px "Space Grotesk";
+  margin:7px 0;
 }
 
 .info p{
-color:#888;
-font-size:13px;
-line-height:1.5;
-min-height:39px
+  color:#888;
+  font-size:13px;
+  line-height:1.5;
+  min-height:39px;
 }
 
 .price{
-display:flex;
-justify-content:space-between;
-align-items:center
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .buy{
-border:0;
-background:#24262e;
-color:#fff;
-border-radius:9px;
-padding:9px 11px
+  border:0;
+  background:#24262e;
+  color:#fff;
+  border-radius:9px;
+  padding:9px 11px;
 }
 
 .dark{
-background:#0d0e13;
-border-top:1px solid var(--line);
-border-bottom:1px solid var(--line)
+  background:#0d0e13;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
 }
 
 .features{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:20px
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
 }
 
 .feature{
-padding:28px;
-border:1px solid var(--line);
-border-radius:14px;
-background:#101116
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#101116;
 }
 
 .feature b{
-color:var(--accent);
-font:600 28px "Space Grotesk"
+  color:var(--accent);
+  font:600 28px "Space Grotesk";
 }
 
 .feature h3{
-font:500 22px "Space Grotesk"
+  font:500 22px "Space Grotesk";
 }
 
 .feature p{
-color:#888;
-line-height:1.6
+  color:#888;
+  line-height:1.6;
 }
 
 .admin{
-display:none;
-min-height:100vh;
-background:#f0f0ed;
-color:#171717
+  display:none;
+  min-height:100vh;
+  background:#f0f0ed;
+  color:#171717;
 }
 
 .admin-layout{
-display:flex;
-min-height:100vh
+  display:flex;
+  min-height:100vh;
 }
 
 .admin aside{
-width:240px;
-background:#0b0b0e;
-color:#ddd;
-padding:25px
+  width:240px;
+  background:#0b0b0e;
+  color:#ddd;
+  padding:25px;
 }
 
 .admin main{
-flex:1;
-padding:40px
+  flex:1;
+  padding:40px;
 }
 
 .admin-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
 }
 
 .stat{
-background:#fff;
-padding:22px;
-border-radius:13px;
-border:1px solid #ddd
+  background:#fff;
+  padding:22px;
+  border-radius:13px;
+  border:1px solid #ddd;
 }
 
 .stat small{
-color:#777
+  color:#777;
 }
 
 .stat strong{
-display:block;
-font-size:27px;
-margin-top:10px
+  display:block;
+  font-size:27px;
+  margin-top:10px;
 }
 
 .admin table{
-width:100%;
-border-collapse:collapse;
-background:#fff;
-margin-top:20px
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  margin-top:20px;
 }
 
-.admin th,.admin td{
-padding:15px;
-text-align:left;
-border-bottom:1px solid #eee
+.admin th,
+.admin td{
+  padding:15px;
+  text-align:left;
+  border-bottom:1px solid #eee;
 }
 
 .admin-tools{
-display:flex;
-justify-content:space-between;
-align-items:center
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .modal{
-position:fixed;
-inset:0;
-background:#000b;
-display:none;
-place-items:center;
-z-index:50
+  position:fixed;
+  inset:0;
+  background:#000b;
+  display:none;
+  place-items:center;
+  z-index:50;
 }
 
 .modal-box{
-background:#121319;
-border:1px solid #333;
-border-radius:18px;
-padding:28px;
-width:min(520px,92vw)
+  background:#121319;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:28px;
+  width:min(520px,92vw);
 }
 
 .modal-box h2{
-font:500 30px "Space Grotesk"
+  font:500 30px "Space Grotesk";
 }
 
-.modal-box input,.modal-box select{
-width:100%;
-padding:12px;
-margin:7px 0;
-background:#0b0c10;
-color:#fff;
-border:1px solid #333;
-border-radius:8px
+.modal-box input,
+.modal-box select{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  background:#0b0c10;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:8px;
 }
 
 .cart{
-position:fixed;
-right:20px;
-bottom:20px;
-background:var(--accent);
-color:#080808;
-border:0;
-border-radius:50px;
-padding:14px 20px;
-font-weight:700;
-z-index:30
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:var(--accent);
+  color:#080808;
+  border:0;
+  border-radius:50px;
+  padding:14px 20px;
+  font-weight:700;
+  z-index:30;
 }
 
 footer{
-padding:60px 7%;
-border-top:1px solid var(--line);
-color:#777;
-display:flex;
-justify-content:space-between
+  padding:60px 7%;
+  border-top:1px solid var(--line);
+  color:#777;
+  display:flex;
+  justify-content:space-between;
 }
 
 @media(max-width:900px){
-nav{display:none}
-.hero{
-grid-template-columns:1fr;
-padding-top:55px
-}
-.hero-art{height:330px}
-.grid{grid-template-columns:repeat(2,1fr)}
-.features{grid-template-columns:1fr}
-.admin-grid{grid-template-columns:1fr 1fr}
+
+  nav{
+    display:none;
+  }
+
+  .hero{
+    grid-template-columns:1fr;
+    padding-top:55px;
+  }
+
+  .hero-art{
+    height:330px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+
+  .admin-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
 }
 
 @media(max-width:560px){
-.grid{grid-template-columns:1fr}
-.hero h1{letter-spacing:-3px}
-.section h2{font-size:38px}
-.nav{padding:0 4%}
-.nav-actions .ghost{display:none}
-footer{display:block}
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero h1{
+    letter-spacing:-3px;
+  }
+
+  .section h2{
+    font-size:38px;
+  }
+
+  .nav{
+    padding:0 4%;
+  }
+
+  .nav-actions .ghost{
+    display:none;
+  }
+
+  footer{
+    display:block;
+  }
+
 }
+
 </style>
 </head>
 
 <body>
 
+<!-- ================= STORE ================= -->
+
 <div id="store">
 
 <header class="nav">
-<div class="logo">CRAFT <span>LAYER</span></div>
 
-<nav>
-<a href="#shop">Shop</a>
-<a href="#collections">Collections</a>
-<a href="#process">Process</a>
-<a href="#about">About</a>
-</nav>
+  <div class="logo">
+    CRAFT <span>LAYER</span>
+  </div>
 
-<div class="nav-actions">
-<button class="ghost" onclick="openAdmin()">Admin</button>
-<button class="pill" onclick="scrollShop()">Shop now</button>
-</div>
+  <nav>
+    <a href="#shop">Shop</a>
+    <a href="#collections">Collections</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <div class="nav-actions">
+
+    <button
+      class="ghost"
+      onclick="openAdmin()">
+      Admin
+    </button>
+
+    <button
+      class="pill"
+      onclick="scrollShop()">
+      Shop now
+    </button>
+
+  </div>
+
 </header>
+
 
 <section class="hero">
 
-<div>
-<div class="eyebrow">DIGITAL CRAFT → PHYSICAL FORM</div>
+  <div>
 
-<h1>
-Collect the worlds<br>
-<em>you imagine.</em>
-</h1>
+    <div class="eyebrow">
+      DIGITAL CRAFT → PHYSICAL FORM
+    </div>
 
-<p class="lead">
-CRAFT LAYER creates 3D-printed anime figures, statues, miniatures and custom collectibles — designed around detail, personality and display.
-</p>
+    <h1>
+      Collect the worlds<br>
+      <em>you imagine.</em>
+    </h1>
 
-<button class="pill" onclick="scrollShop()">
-Explore models →
-</button>
-</div>
+    <p class="lead">
+      CRAFT LAYER creates 3D-printed anime figures,
+      statues, miniatures and custom collectibles —
+      designed around detail, personality and display.
+    </p>
 
-<div class="hero-art">
-<div class="ring"></div>
-<div class="core"></div>
+    <button
+      class="pill"
+      onclick="scrollShop()">
+      Explore models →
+    </button>
 
-<div class="hero-badge">
-PRECISION / 01<br>
-<b>3D COLLECTIBLES</b>
-</div>
-</div>
+  </div>
 
-</section>
 
-<section id="shop" class="section">
+  <div class="hero-art">
 
-<div class="section-head">
+    <div class="ring"></div>
 
-<div>
-<div class="eyebrow">THE COLLECTION</div>
-<h2>Featured models</h2>
-</div>
+    <div class="core"></div>
 
-<div class="filters" id="filters"></div>
+    <div class="hero-badge">
+      PRECISION / 01<br>
+      <b>3D COLLECTIBLES</b>
+    </div>
 
-</div>
-
-<div class="grid" id="products"></div>
+  </div>
 
 </section>
 
-<section id="collections" class="section dark">
 
-<div class="eyebrow">WHY CRAFT LAYER</div>
+<section
+  id="shop"
+  class="section">
 
-<h2>
-Made for collectors.<br>
-<em>Built around detail.</em>
-</h2>
+  <div class="section-head">
 
-<div class="features">
+    <div>
 
-<div class="feature">
-<b>01</b>
-<h3>Print precision</h3>
-<p>Clean geometry, controlled layers and reliable repeatability.</p>
-</div>
+      <div class="eyebrow">
+        THE COLLECTION
+      </div>
 
-<div class="feature">
-<b>02</b>
-<h3>Display first</h3>
-<p>Scale, finish, weight and packaging are treated as part of the collectible.</p>
-</div>
+      <h2>
+        Featured models
+      </h2>
 
-<div class="feature">
-<b>03</b>
-<h3>Custom by design</h3>
-<p>Architecture supports custom models, variants, materials and made-to-order products.</p>
-</div>
+    </div>
 
-</div>
-</section>
+    <div
+      class="filters"
+      id="filters">
+    </div>
 
-<section id="process" class="section">
+  </div>
 
-<div class="eyebrow">FROM MODEL TO SHELF</div>
-
-<h2>The CRAFT LAYER process</h2>
-
-<div class="features">
-
-<div class="feature">
-<b>01</b>
-<h3>Model</h3>
-<p>Prepare and validate digital geometry before production.</p>
-</div>
-
-<div class="feature">
-<b>02</b>
-<h3>Print</h3>
-<p>Choose material, scale and finish, then produce the physical form.</p>
-</div>
-
-<div class="feature">
-<b>03</b>
-<h3>Finish</h3>
-<p>Inspect, package and prepare every order for its destination.</p>
-</div>
-
-</div>
-</section>
-
-<section id="about" class="section dark">
-
-<div class="eyebrow">CRAFT LAYER</div>
-
-<h2>A storefront built to evolve.</h2>
-
-<p class="lead">
-Products, prices, currencies, payment methods, shipping regions and collections are designed to be managed later from the merchant system rather than hard-coded into the storefront.
-</p>
+  <div
+    class="grid"
+    id="products">
+  </div>
 
 </section>
+
+
+<section
+  id="collections"
+  class="section dark">
+
+  <div class="eyebrow">
+    WHY CRAFT LAYER
+  </div>
+
+  <h2>
+    Made for collectors.<br>
+    <em>Built around detail.</em>
+  </h2>
+
+  <div class="features">
+
+    <div class="feature">
+
+      <b>01</b>
+
+      <h3>
+        Print precision
+      </h3>
+
+      <p>
+        Clean geometry, controlled layers
+        and reliable repeatability.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <b>02</b>
+
+      <h3>
+        Display first
+      </h3>
+
+      <p>
+        Scale, finish, weight and packaging
+        are treated as part of the collectible.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <b>03</b>
+
+      <h3>
+        Custom by design
+      </h3>
+
+      <p>
+        Architecture supports custom models,
+        variants, materials and made-to-order products.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section
+  id="process"
+  class="section">
+
+  <div class="eyebrow">
+    FROM MODEL TO SHELF
+  </div>
+
+  <h2>
+    The CRAFT LAYER process
+  </h2>
+
+  <div class="features">
+
+    <div class="feature">
+
+      <b>01</b>
+
+      <h3>
+        Model
+      </h3>
+
+      <p>
+        Prepare and validate digital geometry
+        before production.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <b>02</b>
+
+      <h3>
+        Print
+      </h3>
+
+      <p>
+        Choose material, scale and finish,
+        then produce the physical form.
+      </p>
+
+    </div>
+
+
+    <div class="feature">
+
+      <b>03</b>
+
+      <h3>
+        Finish
+      </h3>
+
+      <p>
+        Inspect, package and prepare every
+        order for its destination.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section
+  id="about"
+  class="section dark">
+
+  <div class="eyebrow">
+    CRAFT LAYER
+  </div>
+
+  <h2>
+    A storefront built to evolve.
+  </h2>
+
+  <p class="lead">
+    Products, prices, currencies, payment methods,
+    shipping regions and collections are designed
+    to be managed later from the merchant system
+    rather than hard-coded into the storefront.
+  </p>
+
+</section>
+
 
 <footer>
 
-<div>
-<div class="logo">CRAFT <span>LAYER</span></div>
-<p>3D collectibles for the next generation.</p>
-</div>
+  <div>
 
-<div>
-India + Worldwide<br>
-COD · Razorpay · Paytm · PayPal
-</div>
+    <div class="logo">
+      CRAFT <span>LAYER</span>
+    </div>
+
+    <p>
+      3D collectibles for the next generation.
+    </p>
+
+  </div>
+
+  <div>
+    India + Worldwide<br>
+    COD · Razorpay · Paytm · PayPal
+  </div>
 
 </footer>
 
-<button class="cart" onclick="showCart()">
-Bag (<span id="bag">0</span>)
+
+<button
+  class="cart"
+  onclick="showCart()">
+
+  Bag (
+  <span id="bag">0</span>
+  )
+
 </button>
 
 </div>
 
 
-<!-- CART -->
+<!-- ================= CART ================= -->
 
-<div id="cartPanel"
-style="position:fixed;top:0;right:0;width:min(420px,92vw);height:100vh;background:#101116;border-left:1px solid #292b35;z-index:100;transform:translateX(100%);transition:transform .3s ease;padding:28px;overflow:auto">
+<div
+  id="cartPanel"
+  style="
+    position:fixed;
+    top:0;
+    right:0;
+    width:min(420px,92vw);
+    height:100vh;
+    background:#101116;
+    border-left:1px solid #292b35;
+    z-index:100;
+    transform:translateX(100%);
+    transition:transform .3s ease;
+    padding:28px;
+    overflow:auto;
+  "
+>
 
-<div style="display:flex;justify-content:space-between;align-items:center">
+  <div
+    style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    "
+  >
 
-<h2 style="margin:0">Your Bag</h2>
+    <h2 style="margin:0">
+      Your Bag
+    </h2>
 
-<button class="ghost" onclick="closeCart()">✕</button>
+    <button
+      class="ghost"
+      onclick="closeCart()">
+      ✕
+    </button>
 
-</div>
+  </div>
 
-<div id="cartContent" style="margin-top:30px"></div>
-
-</div>
-
-
-<!-- ADMIN -->
-
-<div id="admin" class="admin">
-
-<div class="admin-layout">
-
-<aside>
-
-<div class="logo">
-CRAFT <span>LAYER</span>
-<small style="display:block;color:#777;margin-top:4px">
-MERCHANT
-</small>
-</div>
-
-<button class="admin-menu active" onclick="showAdminSection('overview')">
-Overview
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('products')">
-Products
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('orders')">
-Orders
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('inventory')">
-Inventory
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('customers')">
-Customers
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('collections')">
-Collections
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('coupons')">
-Coupons
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('payments')">
-Payments
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('shipping')">
-Shipping
-</button>
-
-<button class="admin-menu" onclick="showAdminSection('analytics')">
-Analytics
-</button>
-
-<br><br>
-
-<button class="ghost" onclick="closeAdmin()">
-← Storefront
-</button>
-
-</aside>
-
-
-<main>
-
-<div class="admin-tools">
-
-<div>
-<small>MERCHANT CONSOLE</small>
-<h1>Overview</h1>
-</div>
-
-<button class="pill" onclick="openProduct()">
-+ Add Product
-</button>
+  <div
+    id="cartContent"
+    style="margin-top:30px">
+  </div>
 
 </div>
 
 
-<div class="admin-grid">
+<!-- ================= ADMIN ================= -->
 
-<div class="stat">
-<small>PRODUCTS</small>
-<strong id="count">0</strong>
+<div
+  id="admin"
+  class="admin"
+>
+
+  <div class="admin-layout">
+
+    <aside>
+
+      <div class="logo">
+
+        CRAFT <span>LAYER</span>
+
+        <small
+          style="
+            display:block;
+            color:#777;
+            margin-top:4px;
+          ">
+          MERCHANT
+        </small>
+
+      </div>
+
+
+      <button
+        class="admin-menu active"
+        onclick="showAdminSection('overview')">
+        Overview
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('products')">
+        Products
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('orders')">
+        Orders
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('inventory')">
+        Inventory
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('customers')">
+        Customers
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('collections')">
+        Collections
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('coupons')">
+        Coupons
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('payments')">
+        Payments
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('shipping')">
+        Shipping
+      </button>
+
+
+      <button
+        class="admin-menu"
+        onclick="showAdminSection('analytics')">
+        Analytics
+      </button>
+
+
+      <button
+        class="ghost"
+        onclick="closeAdmin()">
+        ← Storefront
+      </button>
+
+    </aside>
+
+
+    <main>
+
+      <div id="adminOverview">
+
+        <div class="admin-tools">
+
+          <div>
+
+            <small>
+              MERCHANT CONSOLE
+            </small>
+
+            <h1>
+              Overview
+            </h1>
+
+          </div>
+
+          <button
+            class="pill"
+            onclick="openProduct()">
+            + Add Product
+          </button>
+
+        </div>
+
+
+        <div class="admin-grid">
+
+          <div class="stat">
+            <small>
+              PRODUCTS
+            </small>
+
+            <strong id="count">
+              0
+            </strong>
+          </div>
+
+
+          <div class="stat">
+            <small>
+              LOW STOCK
+            </small>
+
+            <strong id="low">
+              0
+            </strong>
+          </div>
+
+
+          <div class="stat">
+            <small>
+              ORDERS
+            </small>
+
+            <strong id="orderCount">
+              0
+            </strong>
+          </div>
+
+
+          <div class="stat">
+            <small>
+              STATUS
+            </small>
+
+            <strong>
+              LIVE
+            </strong>
+          </div>
+
+        </div>
+
+
+        <div
+          class="admin-tools"
+          style="margin-top:35px">
+
+          <h2>
+            Products
+          </h2>
+
+          <button
+            class="ghost"
+            onclick="showAdminSection('products')">
+            View all
+          </button>
+
+        </div>
+
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+
+          </thead>
+
+          <tbody id="adminProducts">
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </main>
+
+  </div>
+
 </div>
 
-<div class="stat">
-<small>LOW STOCK</small>
-<strong id="low">0</strong>
-</div>
 
-<div class="stat">
-<small>ORDERS</small>
-<strong id="orderCount">0</strong>
-</div>
+<!-- ================= PRODUCT MODAL ================= -->
 
-<div class="stat">
-<small>STORE</small>
-<strong>LIVE</strong>
-</div>
+<div
+  id="productModal"
+  class="modal">
 
-</div>
+  <div class="modal-box">
 
+    <h2>
+      Add Product
+    </h2>
 
-<table>
+    <input
+      id="pn"
+      placeholder="Product name">
 
-<thead>
+    <input
+      id="pc"
+      placeholder="Category">
 
-<tr>
-<th>Product</th>
-<th>Category</th>
-<th>Price</th>
-<th>Stock</th>
-<th>Action</th>
-</tr>
+    <input
+      id="pp"
+      type="number"
+      placeholder="Price">
 
-</thead>
+    <select id="pm">
 
-<tbody id="adminProducts"></tbody>
+      <option value="INR">
+        INR ₹
+      </option>
 
-</table>
+      <option value="USD">
+        USD $
+      </option>
 
-</main>
+      <option value="EUR">
+        EUR €
+      </option>
 
-</div>
+    </select>
 
-</div>
+    <input
+      id="ps"
+      type="number"
+      placeholder="Stock">
 
+    <input
+      id="pi"
+      placeholder="Image URL (optional)">
 
-<!-- PRODUCT MODAL -->
+    <button
+      class="pill"
+      onclick="saveProduct()">
+      Save Product
+    </button>
 
-<div id="productModal" class="modal">
+    <button
+      class="ghost"
+      onclick="closeProduct()">
+      Cancel
+    </button>
 
-<div class="modal-box">
-
-<h2>Add Product</h2>
-
-<input id="pn" placeholder="Product name">
-
-<input id="pc" placeholder="Category">
-
-<input id="pp" type="number" placeholder="Price">
-
-<select id="pm">
-<option value="INR">INR</option>
-<option value="USD">USD</option>
-<option value="EUR">EUR</option>
-</select>
-
-<input id="ps" type="number" placeholder="Stock">
-
-<input id="pi" placeholder="Image URL">
-
-<br><br>
-
-<button class="pill" onclick="saveProduct()">
-Save Product
-</button>
-
-<button class="ghost" onclick="closeProduct()">
-Cancel
-</button>
-
-</div>
+  </div>
 
 </div>
 
 
-<!-- SUPABASE -->
+<!-- ================= SUPABASE ================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
 const SUPABASE_URL =
-"https://ijbkwhoxlfoefrxzeofz.supabase.co";
+  "https://ijbkwhoxlfoefrxzeofz.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_4MSuYPStCRDDT0TqussTmw_jKA0e6bE";
+  "sb_publishable_4MSuYPStCRDDT0TqussTmw_jKA0e6bE";
 
 const supabaseClient =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-/* DOM */
+/* ================= DOM ================= */
 
-const store = document.getElementById("store");
-const admin = document.getElementById("admin");
-const filters = document.getElementById("filters");
-const count = document.getElementById("count");
-const low = document.getElementById("low");
-const orderCount = document.getElementById("orderCount");
-const adminProducts = document.getElementById("adminProducts");
+const store =
+  document.getElementById("store");
 
-const modal = document.getElementById("productModal");
+const admin =
+  document.getElementById("admin");
 
-const pn = document.getElementById("pn");
-const pc = document.getElementById("pc");
-const pp = document.getElementById("pp");
-const pm = document.getElementById("pm");
-const ps = document.getElementById("ps");
-const pi = document.getElementById("pi");
+const filters =
+  document.getElementById("filters");
+
+const count =
+  document.getElementById("count");
+
+const low =
+  document.getElementById("low");
+
+const orderCount =
+  document.getElementById("orderCount");
+
+const adminProducts =
+  document.getElementById("adminProducts");
+
+const modal =
+  document.getElementById("productModal");
+
+const pn =
+  document.getElementById("pn");
+
+const pc =
+  document.getElementById("pc");
+
+const pp =
+  document.getElementById("pp");
+
+const pm =
+  document.getElementById("pm");
+
+const ps =
+  document.getElementById("ps");
+
+const pi =
+  document.getElementById("pi");
 
 
-/* PRODUCTS */
+/* ================= DEFAULT PRODUCTS ================= */
 
 const defaults = [
-["Cyber Nova","Anime Figures",2199,12,""],
-["Moonblade Sentinel","Statues",3499,7,""],
-["Neon Ronin","Anime Figures",1899,18,""],
-["Void Mage Bust","Busts",2799,5,""],
-["Pocket Mecha","Miniatures",899,26,""],
-["Astral Knight","Statues",4299,4,"https://placehold.co/500x500"],
-["Custom Model","Custom Models",0,0,""],
-["Chibi Guardian","Miniatures",1299,15,""]
+
+  [
+    "Cyber Nova",
+    "Anime Figures",
+    2199,
+    12,
+    ""
+  ],
+
+  [
+    "Moonblade Sentinel",
+    "Statues",
+    3499,
+    7,
+    ""
+  ],
+
+  [
+    "Neon Ronin",
+    "Anime Figures",
+    1899,
+    18,
+    ""
+  ],
+
+  [
+    "Void Mage Bust",
+    "Busts",
+    2799,
+    5,
+    ""
+  ],
+
+  [
+    "Pocket Mecha",
+    "Miniatures",
+    899,
+    26,
+    ""
+  ],
+
+  [
+    "Astral Knight",
+    "Statues",
+    4299,
+    4,
+    "https://placehold.co/500x500"
+  ],
+
+  [
+    "Custom Model",
+    "Custom Models",
+    0,
+    0,
+    ""
+  ],
+
+  [
+    "Chibi Guardian",
+    "Miniatures",
+    1299,
+    15,
+    ""
+  ]
+
 ];
 
 
 let savedProducts =
-JSON.parse(
-localStorage.getItem("craftLayerProducts") || "null"
-);
+  JSON.parse(
+    localStorage.getItem(
+      "craftLayerProducts"
+    ) || "null"
+  );
 
 
-let products = savedProducts
-? savedProducts.map((p,i)=>({
+let products =
+  savedProducts
+    ? savedProducts.map((p,i) => ({
 
-id:p.id || "product-"+i,
-name:p.name,
-cat:p.cat,
-price:p.price,
-currency:p.currency || "INR",
-stock:p.stock,
-image:p.image || ""
+        id:
+          p.id ||
+          "product-" + i,
 
-}))
-: defaults.map((x,i)=>({
+        name:
+          p.name,
 
-id:"product-"+i,
-name:x[0],
-cat:x[1],
-price:x[2],
-currency:"INR",
-stock:x[3],
-image:x[4]
+        cat:
+          p.cat,
 
-}));
+        price:
+          p.price,
+
+        currency:
+          p.currency || "INR",
+
+        stock:
+          p.stock,
+
+        image:
+          p.image || ""
+
+      }))
+
+    : defaults.map((x,i) => ({
+
+        id:
+          "product-" + i,
+
+        name:
+          x[0],
+
+        cat:
+          x[1],
+
+        price:
+          x[2],
+
+        currency:
+          "INR",
+
+        stock:
+          x[3],
+
+        image:
+          x[4]
+
+      }));
 
 
 localStorage.setItem(
-"craftLayerProducts",
-JSON.stringify(products)
+  "craftLayerProducts",
+  JSON.stringify(products)
 );
 
+
+/* ================= BAG ================= */
 
 let bag =
-Number(
-localStorage.getItem("craftLayerBag") || 0
-);
+  Number(
+    localStorage.getItem(
+      "craftLayerBag"
+    ) || 0
+  );
 
+
+/* ================= MONEY ================= */
 
 function money(p){
 
-return new Intl.NumberFormat(
-"en-IN",
-{
-style:"currency",
-currency:p.currency || "INR",
-maximumFractionDigits:0
-}
-).format(p.price);
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      style:"currency",
+      currency:p.currency || "INR",
+      maximumFractionDigits:0
+    }
+  ).format(p.price);
 
 }
 
+
+/* ================= STORE PRODUCTS ================= */
 
 function render(filter="All"){
 
-let cats=[
-"All",
-...new Set(products.map(p=>p.cat))
-];
+  let cats = [
+    "All",
+    ...new Set(
+      products.map(
+        p => p.cat
+      )
+    )
+  ];
 
 
-filters.innerHTML =
-cats.map(c=>`
+  filters.innerHTML =
+    cats.map(c => `
 
-<button
-class="filter ${c===filter?"active":""}"
-onclick="render('${c.replaceAll("'","")}')">
-${c}
-</button>
+      <button
+        class="filter ${c === filter ? "active" : ""}"
+        onclick="render('${c.replaceAll("'","")}')">
 
-`).join("");
+        ${c}
 
+      </button>
 
-let list =
-filter==="All"
-? products
-: products.filter(p=>p.cat===filter);
+    `).join("");
 
 
-document.getElementById("products").innerHTML =
+  let list =
+    filter === "All"
+      ? products
+      : products.filter(
+          p => p.cat === filter
+        );
 
-list.map((p)=>`
 
-<article class="card">
+  document.getElementById(
+    "products"
+  ).innerHTML =
 
-<div class="art">
+    list.map(p => `
 
-<span class="tag">
-${p.cat}
-</span>
+      <article class="card">
 
-${
-p.image
-?
-'<img src="'+p.image+'" style="width:100%;height:100%;object-fit:cover">'
-:
-'<div class="shape"></div>'
+        <div class="art">
+
+          <span class="tag">
+            ${p.cat}
+          </span>
+
+          ${
+            p.image
+
+              ? `
+                <img
+                  src="${p.image}"
+                  style="
+                    width:100%;
+                    height:100%;
+                    object-fit:cover;
+                  "
+                  onerror="this.style.display='none'"
+                >
+              `
+
+              : `
+                <div class="shape"></div>
+              `
+          }
+
+        </div>
+
+
+        <div class="info">
+
+          <small>
+            ${
+              p.stock > 0
+                ? "IN STOCK"
+                : "MADE TO ORDER"
+            }
+          </small>
+
+
+          <h3>
+            ${p.name}
+          </h3>
+
+
+          <p>
+            Premium 3D collectible · ${p.cat}
+          </p>
+
+
+          <div class="price">
+
+            <b>
+              ${
+                p.price
+                  ? money(p)
+                  : "Custom"
+              }
+            </b>
+
+
+            <button
+              class="buy"
+              onclick="addBag(products[${products.indexOf(p)}])">
+
+              Add
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `).join("");
+
 }
 
-</div>
 
-<div class="info">
-
-<small>
-${p.stock>0?"IN STOCK":"MADE TO ORDER"}
-</small>
-
-<h3>${p.name}</h3>
-
-<p>
-Premium 3D collectible · ${p.cat}
-</p>
-
-<div class="price">
-
-<b>
-${p.price ? money(p) : "Custom"}
-</b>
-
-<button
-class="buy"
-onclick="addBag(products[${products.indexOf(p)}])">
-Add
-</button>
-
-</div>
-
-</div>
-
-</article>
-
-`).join("");
-
-}
-
-
-/* CART */
+/* ================= ADD TO BAG ================= */
 
 function addBag(product){
 
-let cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  let cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
 
-const existing =
-cart.find(item=>item.id===product.id);
+  const existing =
+    cart.find(
+      item =>
+        item.id === product.id
+    );
 
 
-if(existing){
+  if(existing){
 
-existing.quantity++;
+    existing.quantity++;
 
-}else{
+  }else{
 
-cart.push({
+    cart.push({
 
-id:product.id,
-name:product.name,
-price:product.price,
-image:product.image,
-quantity:1
+      id:
+        product.id,
 
-});
+      name:
+        product.name,
+
+      price:
+        product.price,
+
+      image:
+        product.image,
+
+      quantity:
+        1
+
+    });
+
+  }
+
+
+  localStorage.setItem(
+    "craftLayerCart",
+    JSON.stringify(cart)
+  );
+
+
+  bag =
+    cart.reduce(
+      (total,item) =>
+        total + item.quantity,
+      0
+    );
+
+
+  localStorage.setItem(
+    "craftLayerBag",
+    bag
+  );
+
+
+  document.getElementById(
+    "bag"
+  ).textContent = bag;
 
 }
 
 
-localStorage.setItem(
-"craftLayerCart",
-JSON.stringify(cart)
-);
-
-
-bag =
-cart.reduce(
-(total,item)=>total+item.quantity,
-0
-);
-
-
-localStorage.setItem(
-"craftLayerBag",
-bag
-);
-
-
-document.getElementById("bag").textContent =
-bag;
-
-}
-
+/* ================= CHANGE QUANTITY ================= */
 
 function changeQty(id,change){
 
-let cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  let cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
 
-const item =
-cart.find(item=>item.id===id);
+  const item =
+    cart.find(
+      item =>
+        item.id === id
+    );
 
 
-if(!item)return;
+  if(!item)
+    return;
 
 
-item.quantity += change;
+  item.quantity += change;
 
 
-if(item.quantity<=0){
+  if(item.quantity <= 0){
 
-cart =
-cart.filter(item=>item.id!==id);
+    cart =
+      cart.filter(
+        item =>
+          item.id !== id
+      );
+
+  }
+
+
+  localStorage.setItem(
+    "craftLayerCart",
+    JSON.stringify(cart)
+  );
+
+
+  bag =
+    cart.reduce(
+      (total,item) =>
+        total + item.quantity,
+      0
+    );
+
+
+  localStorage.setItem(
+    "craftLayerBag",
+    bag
+  );
+
+
+  document.getElementById(
+    "bag"
+  ).textContent = bag;
+
+
+  showCart();
 
 }
 
 
-localStorage.setItem(
-"craftLayerCart",
-JSON.stringify(cart)
-);
-
-
-bag =
-cart.reduce(
-(total,item)=>total+item.quantity,
-0
-);
-
-
-localStorage.setItem(
-"craftLayerBag",
-bag
-);
-
-
-document.getElementById("bag").textContent =
-bag;
-
-
-showCart();
-
-}
-
+/* ================= REMOVE FROM CART ================= */
 
 function removeFromCart(id){
 
-let cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  let cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
 
-cart =
-cart.filter(item=>item.id!==id);
+  cart =
+    cart.filter(
+      item =>
+        item.id !== id
+    );
 
 
-localStorage.setItem(
-"craftLayerCart",
-JSON.stringify(cart)
-);
+  localStorage.setItem(
+    "craftLayerCart",
+    JSON.stringify(cart)
+  );
 
 
-bag =
-cart.reduce(
-(total,item)=>total+item.quantity,
-0
-);
+  bag =
+    cart.reduce(
+      (total,item) =>
+        total + item.quantity,
+      0
+    );
 
 
-localStorage.setItem(
-"craftLayerBag",
-bag
-);
+  localStorage.setItem(
+    "craftLayerBag",
+    bag
+  );
 
 
-document.getElementById("bag").textContent =
-bag;
+  document.getElementById(
+    "bag"
+  ).textContent = bag;
 
 
-showCart();
+  showCart();
 
 }
 
+
+/* ================= CLEAR CART ================= */
 
 function clearCart(){
 
-localStorage.removeItem("craftLayerCart");
-localStorage.removeItem("craftLayerBag");
+  localStorage.removeItem(
+    "craftLayerCart"
+  );
 
-bag=0;
+  localStorage.removeItem(
+    "craftLayerBag"
+  );
 
-document.getElementById("bag").textContent=bag;
 
-showCart();
+  bag = 0;
+
+
+  document.getElementById(
+    "bag"
+  ).textContent = bag;
+
+
+  showCart();
 
 }
 
+
+/* ================= SHOW CART ================= */
 
 function showCart(){
 
-const panel =
-document.getElementById("cartPanel");
+  const panel =
+    document.getElementById(
+      "cartPanel"
+    );
 
-const content =
-document.getElementById("cartContent");
-
-
-const cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  const content =
+    document.getElementById(
+      "cartContent"
+    );
 
 
-if(!cart.length){
-
-content.innerHTML=`
-
-<p>Your bag is empty.</p>
-
-<button
-class="pill"
-onclick="closeCart()">
-Continue shopping
-</button>
-
-`;
-
-}else{
-
-let total=0;
+  const cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
 
-content.innerHTML=`
+  if(!cart.length){
 
-<div class="cart-items">
+    content.innerHTML = `
 
-${cart.map(item=>{
+      <p>
+        Your bag is empty.
+      </p>
 
-total +=
-Number(item.price || 0) *
-item.quantity;
+      <button
+        class="pill"
+        onclick="closeCart()">
+
+        Continue shopping
+
+      </button>
+
+    `;
+
+  }else{
+
+    let total = 0;
 
 
-return `
+    content.innerHTML = `
 
-<div class="cart-item">
+      <div class="cart-items">
 
-<img
-src="${item.image || ''}"
-alt="${item.name}"
-style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+        ${cart.map(item => {
 
-<div>
+          total +=
+            Number(
+              item.price || 0
+            ) *
+            item.quantity;
 
-<strong>
-${item.name}
-</strong>
 
-<p>
-₹${Number(item.price || 0).toLocaleString("en-IN")}
-</p>
+          return `
 
-<div
-style="display:flex;align-items:center;gap:10px;">
+            <div
+              class="cart-item"
+              style="
+                display:flex;
+                gap:14px;
+                margin-bottom:20px;
+                padding-bottom:20px;
+                border-bottom:1px solid #292b35;
+              "
+            >
 
-<button
-class="pill"
-onclick="changeQty('${item.id}',-1)">
-−
-</button>
+              <img
+                src="${item.image || ""}"
+                alt="${item.name}"
+                style="
+                  width:80px;
+                  height:80px;
+                  object-fit:cover;
+                  border-radius:10px;
+                  background:#181920;
+                "
+                onerror="this.style.display='none'"
+              >
 
-<span>
-Quantity: ${item.quantity}
-</span>
 
-<button
-class="pill"
-onclick="changeQty('${item.id}',1)">
-+
-</button>
+              <div>
 
-</div>
+                <strong>
+                  ${item.name}
+                </strong>
 
-<button
-class="pill"
-onclick="removeFromCart('${item.id}')">
-Remove
-</button>
 
-</div>
+                <p>
+                  ₹${Number(
+                    item.price || 0
+                  ).toLocaleString("en-IN")}
+                </p>
 
-</div>
 
-`;
+                <div
+                  style="
+                    display:flex;
+                    align-items:center;
+                    gap:10px;
+                  "
+                >
 
-}).join("")}
+                  <button
+                    class="pill"
+                    onclick="changeQty('${item.id}',-1)">
+                    −
+                  </button>
 
-</div>
+                  <span>
+                    Quantity:
+                    ${item.quantity}
+                  </span>
 
-<hr>
+                  <button
+                    class="pill"
+                    onclick="changeQty('${item.id}',1)">
+                    +
+                  </button>
 
-<h3>
-Total: ₹${total.toLocaleString("en-IN")}
-</h3>
+                </div>
 
-<button
-class="pill"
-onclick="clearCart()">
-Clear Bag
-</button>
 
-<button
-class="pill"
-onclick="showCheckout()">
-Checkout
-</button>
+                <button
+                  class="pill"
+                  onclick="removeFromCart('${item.id}')"
+                  style="margin-top:10px">
 
-<button
-class="pill"
-onclick="closeCart()">
-Continue shopping
-</button>
+                  Remove
 
-`;
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }).join("")}
+
+      </div>
+
+
+      <hr>
+
+
+      <h3>
+        Total:
+        ₹${total.toLocaleString("en-IN")}
+      </h3>
+
+
+      <button
+        class="pill"
+        onclick="clearCart()">
+
+        Clear Bag
+
+      </button>
+
+
+      <button
+        class="pill"
+        onclick="showCheckout()">
+
+        Checkout
+
+      </button>
+
+
+      <button
+        class="pill"
+        onclick="closeCart()">
+
+        Continue shopping
+
+      </button>
+
+    `;
+
+  }
+
+
+  panel.style.transform =
+    "translateX(0)";
 
 }
 
 
-panel.style.transform =
-"translateX(0)";
-
-}
-
-
-/* CHECKOUT */
+/* ================= CHECKOUT ================= */
 
 function showCheckout(){
 
-const panel =
-document.getElementById("cartPanel");
+  const panel =
+    document.getElementById(
+      "cartPanel"
+    );
 
-const content =
-document.getElementById("cartContent");
-
-
-const cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  const content =
+    document.getElementById(
+      "cartContent"
+    );
 
 
-if(!cart.length){
+  const cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
-content.innerHTML=`
 
-<p>Your bag is empty.</p>
+  if(!cart.length){
 
-<button
-class="pill"
-onclick="closeCart()">
-Continue shopping
-</button>
+    content.innerHTML = `
 
-`;
+      <p>
+        Your bag is empty.
+      </p>
 
-return;
+      <button
+        class="pill"
+        onclick="closeCart()">
+
+        Continue shopping
+
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+
+  let total = 0;
+
+
+  cart.forEach(item => {
+
+    total +=
+      Number(
+        item.price || 0
+      ) *
+      item.quantity;
+
+  });
+
+
+  content.innerHTML = `
+
+    <h2>
+      Checkout
+    </h2>
+
+
+    <form
+      onsubmit="placeOrder(event)"
+    >
+
+      <input
+        id="customerName"
+        required
+        placeholder="Full Name"
+      >
+
+
+      <input
+        id="customerEmail"
+        type="email"
+        required
+        placeholder="Email"
+      >
+
+
+      <input
+        id="customerPhone"
+        required
+        placeholder="Phone Number"
+      >
+
+
+      <input
+        id="customerAddress"
+        required
+        placeholder="Address"
+      >
+
+
+      <input
+        id="customerCity"
+        required
+        placeholder="City"
+      >
+
+
+      <input
+        id="customerState"
+        required
+        placeholder="State"
+      >
+
+
+      <input
+        id="customerPin"
+        required
+        placeholder="PIN Code"
+      >
+
+
+      <select
+        id="paymentMethod"
+        required
+      >
+
+        <option value="">
+          Select Payment Method
+        </option>
+
+        <option value="COD">
+          Cash on Delivery
+        </option>
+
+        <option value="Razorpay">
+          Razorpay
+        </option>
+
+        <option value="Paytm">
+          Paytm
+        </option>
+
+        <option value="PayPal">
+          PayPal
+        </option>
+
+      </select>
+
+
+      <h3>
+        Total:
+        ₹${total.toLocaleString("en-IN")}
+      </h3>
+
+
+      <button
+        class="pill"
+        type="submit">
+
+        Place Order
+
+      </button>
+
+
+      <button
+        class="pill"
+        type="button"
+        onclick="showCart()">
+
+        Back to Bag
+
+      </button>
+
+    </form>
+
+  `;
+
+
+  panel.style.transform =
+    "translateX(0)";
 
 }
 
 
-let total=0;
-
-
-cart.forEach(item=>{
-
-total +=
-Number(item.price || 0) *
-item.quantity;
-
-});
-
-
-content.innerHTML=`
-
-<h2>Checkout</h2>
-
-<form onsubmit="placeOrder(event)">
-
-<input
-id="customerName"
-required
-placeholder="Full Name">
-
-<input
-id="customerEmail"
-type="email"
-required
-placeholder="Email">
-
-<input
-id="customerPhone"
-required
-placeholder="Phone Number">
-
-<input
-id="customerAddress"
-required
-placeholder="Address">
-
-<input
-id="customerCity"
-required
-placeholder="City">
-
-<input
-id="customerState"
-required
-placeholder="State">
-
-<input
-id="customerPin"
-required
-placeholder="PIN Code">
-
-<select id="paymentMethod" required>
-
-<option value="">
-Select Payment Method
-</option>
-
-<option value="COD">
-Cash on Delivery
-</option>
-
-<option value="Razorpay">
-Razorpay
-</option>
-
-<option value="Paytm">
-Paytm
-</option>
-
-<option value="PayPal">
-PayPal
-</option>
-
-</select>
-
-<h3>
-Total: ₹${total.toLocaleString("en-IN")}
-</h3>
-
-<button
-class="pill"
-type="submit">
-Place Order
-</button>
-
-<button
-class="pill"
-type="button"
-onclick="showCart()">
-Back to Bag
-</button>
-
-</form>
-
-`;
-
-
-panel.style.transform =
-"translateX(0)";
-
-}
-
-
-/* PLACE ORDER */
+/* ================= PLACE ORDER ================= */
 
 async function placeOrder(event){
 
-event.preventDefault();
+  event.preventDefault();
 
 
-const cart =
-JSON.parse(
-localStorage.getItem("craftLayerCart") || "[]"
-);
+  const cart =
+    JSON.parse(
+      localStorage.getItem(
+        "craftLayerCart"
+      ) || "[]"
+    );
 
 
-if(!cart.length){
-
-alert("Your bag is empty.");
-
-return;
-
-}
-
-
-const total =
-cart.reduce(
-(sum,item)=>
-sum+
-Number(item.price || 0)*
-item.quantity,
-0
-);
-
-
-const order={
-
-id:crypto.randomUUID(),
-
-customer_name:
-document.getElementById("customerName").value,
-
-customer_email:
-document.getElementById("customerEmail").value,
-
-customer_phone:
-document.getElementById("customerPhone").value,
-
-shipping_address:
-document.getElementById("customerAddress").value,
-
-city:
-document.getElementById("customerCity").value,
-
-state:
-document.getElementById("customerState").value,
-
-pin:
-document.getElementById("customerPin").value,
-
-payment_method:
-document.getElementById("paymentMethod").value,
-
-items:cart,
-
-total:total
-
-};
-
-
-const {error} =
-await supabaseClient
-.from("orders")
-.insert([order]);
-
-
-if(error){
-
-console.error("Order error:",error);
-
-alert(
-"Sorry, your order could not be placed."
-);
-
-return;
-
-}
-
-
-localStorage.removeItem(
-"craftLayerCart"
-);
-
-localStorage.removeItem(
-"craftLayerBag"
-);
-
-
-bag=0;
-
-document.getElementById("bag").textContent="0";
-
-
-const content =
-document.getElementById("cartContent");
-
-
-content.innerHTML=`
-
-<h2>Order Placed 🎉</h2>
-
-<p>
-Order ID:
-<strong>${order.id}</strong>
-</p>
-
-<p>
-Thank you, ${order.customer_name}!
-</p>
-
-<p>
-Total:
-<strong>
-₹${order.total.toLocaleString("en-IN")}
-</strong>
-</p>
-
-<button
-class="pill"
-onclick="closeCart()">
-Continue Shopping
-</button>
-
-`;
-
-}
-
-
-/* NAVIGATION */
-
-function closeCart(){
-
-document.getElementById("cartPanel")
-.style.transform="translateX(100%)";
-
-}
-
-
-function scrollShop(){
-
-document
-.getElementById("shop")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-}
-
-
-/* ADMIN */
-
-function showAdminSection(section){
-
-if(section==="overview"){
-
-renderAdmin();
-
-return;
-
-}
-
-
-if(section==="products"){
-
-renderAdmin();
-
-return;
-
-}
-
-
-if(section==="orders"){
-
-showAdminOrders();
-
-return;
-
-}
-
-
-alert(
-section.charAt(0).toUpperCase()+
-section.slice(1)+
-" section coming next."
-);
-async function showAdminOrders(){
-}
-
-
-async function showAdminOrders(){
-
-  const main = document.querySelector("#admin main");
-
-  main.innerHTML = `
-    <div class="admin-tools">
-      <div>
-        <small>MERCHANT CONSOLE</small>
-        <h1>Orders</h1>
-        <p style="opacity:.6">
-          Manage customer orders and update their status.
-        </p>
-      </div>
-    </div>
-
-    <div id="ordersList">
-      <p>Loading orders...</p>
-    </div>
-  `;
-
-  const ordersList = document.getElementById("ordersList");
-
-  const { data, error } = await supabaseClient
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending:false });
-
-  if(error){
-
-    console.error("Orders error:", error);
-
-    ordersList.innerHTML = `
-      <div class="stat">
-        <h3>❌ Could not load orders</h3>
-        <p>${error.message}</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  if(!data || data.length === 0){
-
-    ordersList.innerHTML = `
-      <div class="stat">
-        <h3>No orders yet</h3>
-        <p>Customer orders will appear here after checkout.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  ordersList.innerHTML = data.map(order => {
-
-    const status = order.status || "Pending";
-
-    const date = order.created_at
-      ? new Date(order.created_at).toLocaleString("en-IN")
-      : "Unknown date";
-
-    return `
-
-      <div class="stat" style="
-        margin-bottom:18px;
-        padding:22px;
-      ">
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          gap:15px;
-          flex-wrap:wrap;
-        ">
-
-          <div>
-            <small>ORDER</small>
-            <h3 style="margin:5px 0">
-              #${order.id}
-            </h3>
-
-            <small>
-              ${date}
-            </small>
-          </div>
-
-          <div>
-            <strong>
-              ₹${Number(order.total || 0).toLocaleString("en-IN")}
-            </strong>
-          </div>
-
-        </div>
-
-        <hr style="
-          margin:18px 0;
-          opacity:.15;
-        ">
-
-        <p>
-          <strong>Customer</strong><br>
-          ${order.customer_name || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Email</strong><br>
-          ${order.customer_email || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Phone</strong><br>
-          ${order.customer_phone || "Not provided"}
-        </p>
-
-        <p>
-          <strong>Shipping Address</strong><br>
-          ${order.shipping_address || "Not provided"}
-        </p>
-
-        <div style="
-          margin-top:18px;
-          display:flex;
-          align-items:center;
-          gap:12px;
-          flex-wrap:wrap;
-        ">
-
-          <strong>Order Status:</strong>
-
-          <select
-            onchange="updateOrderStatus('${order.id}', this.value)"
-            style="
-              padding:9px 12px;
-              border-radius:8px;
-              background:#111;
-              color:white;
-              border:1px solid #444;
-              cursor:pointer;
-            "
-          >
-
-            <option value="Pending"
-              ${status === "Pending" ? "selected" : ""}>
-              Pending
-            </option>
-
-            <option value="Confirmed"
-              ${status === "Confirmed" ? "selected" : ""}>
-              Confirmed
-            </option>
-
-            <option value="Shipped"
-              ${status === "Shipped" ? "selected" : ""}>
-              Shipped
-            </option>
-
-            <option value="Delivered"
-              ${status === "Delivered" ? "selected" : ""}>
-              Delivered
-            </option>
-
-            <option value="Cancelled"
-              ${status === "Cancelled" ? "selected" : ""}>
-              Cancelled
-            </option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }).join("");
-}
-
-
-async function updateOrderStatus(orderId, newStatus){
-
-  const { error } = await supabaseClient
-    .from("orders")
-    .update({
-      status: newStatus
-    })
-    .eq("id", orderId);
-
-  if(error){
-
-    console.error("Status update error:", error);
+  if(!cart.length){
 
     alert(
-      "❌ Could not update order status.\n\n" +
+      "Your bag is empty."
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    cart.reduce(
+      (sum,item) =>
+        sum +
+        Number(
+          item.price || 0
+        ) *
+        item.quantity,
+      0
+    );
+
+
+  const order = {
+
+    id:
+      crypto.randomUUID(),
+
+    customer_name:
+      document.getElementById(
+        "customerName"
+      ).value,
+
+    customer_email:
+      document.getElementById(
+        "customerEmail"
+      ).value,
+
+    customer_phone:
+      document.getElementById(
+        "customerPhone"
+      ).value,
+
+    shipping_address:
+      document.getElementById(
+        "customerAddress"
+      ).value,
+
+    city:
+      document.getElementById(
+        "customerCity"
+      ).value,
+
+    state:
+      document.getElementById(
+        "customerState"
+      ).value,
+
+    pin:
+      document.getElementById(
+        "customerPin"
+      ).value,
+
+    payment_method:
+      document.getElementById(
+        "paymentMethod"
+      ).value,
+
+    items:
+      cart,
+
+    total:
+      total
+
+  };
+
+
+  const { error } =
+    await supabaseClient
+      .from("orders")
+      .insert([order]);
+
+
+  if(error){
+
+    console.error(
+      "Order error:",
+      error
+    );
+
+    alert(
+      "Sorry, your order could not be placed.\n\n" +
       error.message
     );
 
     return;
+
   }
 
-  alert("✅ Order status updated!");
 
-  showAdminOrders();
+  localStorage.removeItem(
+    "craftLayerCart"
+  );
+
+  localStorage.removeItem(
+    "craftLayerBag"
+  );
+
+
+  bag = 0;
+
+
+  document.getElementById(
+    "bag"
+  ).textContent = "0";
+
+
+  const content =
+    document.getElementById(
+      "cartContent"
+    );
+
+
+  content.innerHTML = `
+
+    <h2>
+      Order Placed 🎉
+    </h2>
+
+    <p>
+      Order ID:
+      <strong>
+        ${order.id}
+      </strong>
+    </p>
+
+    <p>
+      Thank you,
+      ${order.customer_name}!
+    </p>
+
+    <p>
+      Total:
+      <strong>
+        ₹${order.total.toLocaleString("en-IN")}
+      </strong>
+    </p>
+
+    <button
+      class="pill"
+      onclick="closeCart()">
+
+      Continue Shopping
+
+    </button>
+
+  `;
+
 }
 
+
+/* ================= CLOSE CART ================= */
+
+function closeCart(){
+
+  document.getElementById(
+    "cartPanel"
+  ).style.transform =
+    "translateX(100%)";
+
+}
+
+
+/* ================= SHOP SCROLL ================= */
+
+function scrollShop(){
+
+  document.getElementById(
+    "shop"
+  ).scrollIntoView({
+    behavior:"smooth"
+  });
+
+}
+
+
+/* ================= ADMIN SECTION ================= */
+
+function showAdminSection(section){
+
+  if(section === "orders"){
+
+    showAdminOrders();
+
+    return;
+
+  }
+
+
+  if(
+    section === "overview" ||
+    section === "products"
+  ){
+
+    renderAdmin(section);
+
+    return;
+
+  }
+
+
+  alert(
+    section.charAt(0).toUpperCase() +
+    section.slice(1) +
+    " section coming next."
+  );
+
+}
+
+
+/* ================= ADMIN RENDER ================= */
+
+function renderAdmin(
+  section="overview"
+){
+
+  const main =
+    document.querySelector(
+      "#admin main"
+    );
+
+
+  if(!main)
+    return;
+
+
+  const lowStock =
+    products.filter(
+      p =>
+        Number(p.stock) > 0 &&
+        Number(p.stock) <= 5
+    ).length;
+
+
+  main.innerHTML = `
+
+    <div class="admin-tools">
+
+      <div>
+
+        <small>
+          MERCHANT CONSOLE
+        </small>
+
+        <h1>
+          ${
+            section === "products"
+              ? "Products"
+              : "Store overview"
+          }
+        </h1>
+
+        <p style="opacity:.6">
+          Manage your CRAFT LAYER store.
+        </p>
+
+      </div>
+
+
+      <button
+        class="pill"
+        onclick="openProduct()">
+
+        + Add Product
+
+      </button>
+
+    </div>
+
+
+    <div class="admin-grid">
+
+      <div class="stat">
+
+        <small>
+          PRODUCTS
+        </small>
+
+        <strong>
+          ${products.length}
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <small>
+          LOW STOCK
+        </small>
+
+        <strong>
+          ${lowStock}
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <small>
+          ORDERS
+        </small>
+
+        <strong id="orderCount">
+          Loading...
+        </strong>
+
+      </div>
+
+
+      <div class="stat">
+
+        <small>
+          STATUS
+        </small>
+
+        <strong>
+          LIVE
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="admin-tools"
+      style="margin-top:35px"
+    >
+
+      <h2>
+        ${
+          section === "products"
+            ? "All Products"
+            : "Products"
+        }
+      </h2>
+
+      ${
+        section === "overview"
+          ? `
+            <button
+              class="ghost"
+              onclick="showAdminSection('products')">
+
+              View all
+
+            </button>
+          `
+          : ""
+      }
+
+    </div>
+
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Product
+          </th>
+
+          <th>
+            Category
+          </th>
+
+          <th>
+            Price
+          </th>
+
+          <th>
+            Stock
+          </th>
+
+          <th>
+            Action
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody
+        id="adminProducts">
+      </tbody>
+
+    </table>
+
+  `;
+
+
+  const table =
+    document.getElementById(
+      "adminProducts"
+    );
+
+
+  table.innerHTML =
+    products.map((p,i) => `
+
+      <tr>
+
+        <td>
+          <b>
+            ${p.name}
+          </b>
+        </td>
+
+        <td>
+          ${p.cat}
+        </td>
+
+        <td>
+          ${
+            p.price
+              ? money(p)
+              : "Custom"
+          }
+        </td>
+
+        <td>
+          ${p.stock}
+        </td>
+
+        <td>
+
+          <button
+            class="ghost"
+            onclick="delProduct(${i})">
+
+            Delete
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
+
+  loadOrderCount();
+
+}
+
+
+/* ================= ORDER COUNT ================= */
+
+async function loadOrderCount(){
+
+  const target =
+    document.getElementById(
+      "orderCount"
+    );
+
+
+  if(!target)
+    return;
+
+
+  const { count,error } =
+    await supabaseClient
+      .from("orders")
+      .select(
+        "id",
+        {
+          count:"exact",
+          head:true
+        }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Order count error:",
+      error
+    );
+
+    target.textContent =
+      "—";
+
+    return;
+
+  }
+
+
+  target.textContent =
+    count ?? 0;
+
+}
+
+
+/* ================= ADMIN ORDERS ================= */
+
+async function showAdminOrders(){
+
+  const main =
+    document.querySelector(
+      "#admin main"
+    );
+
+
+  if(!main)
+    return;
+
+
+  main.innerHTML = `
+
+    <div class="admin-tools">
+
+      <div>
+
+        <small>
+          MERCHANT CONSOLE
+        </small>
+
+        <h1>
+          Orders
+        </h1>
+
+        <p style="opacity:.6">
+          Manage customer orders
+          and update their status.
+        </p>
+
+      </div>
+
+
+      <button
+        class="ghost"
+        onclick="showAdminSection('overview')">
+
+        ← Overview
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="ordersList"
+      style="margin-top:25px"
+    >
+
+      <div class="stat">
+
+        <p>
+          Loading orders...
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const ordersList =
+    document.getElementById(
+      "ordersList"
+    );
+
+
+  const { data,error } =
+    await supabaseClient
+      .from("orders")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(
+      "Orders error:",
+      error
+    );
+
+
+    ordersList.innerHTML = `
+
+      <div class="stat">
+
+        <h3>
+          Could not load orders
+        </h3>
+
+        <p>
+          ${error.message}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  if(
+    !data ||
+    data.length === 0
+  ){
+
+    ordersList.innerHTML = `
+
+      <div class="stat">
+
+        <h3>
+          No orders yet
+        </h3>
+
+        <p>
+          Customer orders will
+          appear here after checkout.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  ordersList.innerHTML =
+    data.map(order => {
+
+      const status =
+        order.status ||
+        "Pending";
+
+
+      const date =
+        order.created_at
+          ? new Date(
+              order.created_at
+            ).toLocaleString(
+              "en-IN"
+            )
+          : "Unknown date";
+
+
+      return `
+
+        <div
+          class="stat"
+          style="
+            margin-bottom:18px;
+            padding:22px;
+          "
+        >
+
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              gap:15px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <div>
+
+              <small>
+                ORDER
+              </small>
+
+              <h3
+                style="margin:5px 0">
+
+                #${order.id}
+
+              </h3>
+
+              <small>
+                ${date}
+              </small>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+
+                ₹${Number(
+                  order.total || 0
+                ).toLocaleString(
+                  "en-IN"
+                )}
+
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <hr
+            style="
+              margin:18px 0;
+              opacity:.15;
+            "
+          >
+
+
+          <p>
+
+            <strong>
+              Customer
+            </strong>
+
+            <br>
+
+            ${
+              order.customer_name ||
+              "Not provided"
+            }
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Email
+            </strong>
+
+            <br>
+
+            ${
+              order.customer_email ||
+              "Not provided"
+            }
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Phone
+            </strong>
+
+            <br>
+
+            ${
+              order.customer_phone ||
+              "Not provided"
+            }
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Shipping Address
+            </strong>
+
+            <br>
+
+            ${
+              order.shipping_address ||
+              "Not provided"
+            }
+
+          </p>
+
+
+          <p>
+
+            <strong>
+              Payment
+            </strong>
+
+            <br>
+
+            ${
+              order.payment_method ||
+              "Not provided"
+            }
+
+          </p>
+
+
+          <div
+            style="
+              margin-top:18px;
+              display:flex;
+              align-items:center;
+              gap:12px;
+              flex-wrap:wrap;
+            "
+          >
+
+            <strong>
+              Order Status:
+            </strong>
+
+
+            <select
+
+              onchange="
+                updateOrderStatus(
+                  '${order.id}',
+                  this.value
+                )
+              "
+
+              style="
+                padding:9px 12px;
+                border-radius:8px;
+                background:#111;
+                color:white;
+                border:1px solid #444;
+                cursor:pointer;
+              "
+            >
+
+              <option
+                value="Pending"
+                ${
+                  status === "Pending"
+                    ? "selected"
+                    : ""
+                }
+              >
+                Pending
+              </option>
+
+
+              <option
+                value="Confirmed"
+                ${
+                  status === "Confirmed"
+                    ? "selected"
+                    : ""
+                }
+              >
+                Confirmed
+              </option>
+
+
+              <option
+                value="Shipped"
+                ${
+                  status === "Shipped"
+                    ? "selected"
+                    : ""
+                }
+              >
+                Shipped
+              </option>
+
+
+              <option
+                value="Delivered"
+                ${
+                  status === "Delivered"
+                    ? "selected"
+                    : ""
+                }
+              >
+                Delivered
+              </option>
+
+
+              <option
+                value="Cancelled"
+                ${
+                  status === "Cancelled"
+                    ? "selected"
+                    : ""
+                }
+              >
+                Cancelled
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* ================= UPDATE ORDER STATUS ================= */
+
+async function updateOrderStatus(
+  orderId,
+  newStatus
+){
+
+  const { error } =
+    await supabaseClient
+      .from("orders")
+      .update({
+        status:newStatus
+      })
+      .eq(
+        "id",
+        orderId
+      );
+
+
+  if(error){
+
+    console.error(
+      "Status update error:",
+      error
+    );
+
+
+    alert(
+      "Could not update order status.\n\n" +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  showAdminOrders();
+
+}
+
+
+/* ================= OPEN ADMIN ================= */
 
 function openAdmin(){
 
-store.style.display="none";
+  store.style.display =
+    "none";
 
-admin.style.display="block";
+  admin.style.display =
+    "block";
 
-renderAdmin();
+  showAdminSection(
+    "overview"
+  );
 
 }
 
+
+/* ================= CLOSE ADMIN ================= */
 
 function closeAdmin(){
 
-admin.style.display="none";
+  admin.style.display =
+    "none";
 
-store.style.display="block";
-
-}
-
-
-function renderAdmin(){
-
-count.textContent=
-products.length;
-
-
-low.textContent=
-products.filter(
-p=>p.stock>0&&p.stock<=5
-).length;
-
-
-adminProducts.innerHTML=
-
-products.map((p,i)=>`
-
-<tr>
-
-<td>
-<b>${p.name}</b>
-</td>
-
-<td>
-${p.cat}
-</td>
-
-<td>
-${p.price ? money(p) : "Custom"}
-</td>
-
-<td>
-${p.stock}
-</td>
-
-<td>
-
-<button
-class="ghost"
-onclick="delProduct(${i})">
-Delete
-</button>
-
-</td>
-
-</tr>
-
-`).join("");
+  store.style.display =
+    "block";
 
 }
 
+
+/* ================= PRODUCT MODAL ================= */
 
 function openProduct(){
 
-modal.style.display="grid";
+  modal.style.display =
+    "grid";
 
 }
 
 
 function closeProduct(){
 
-modal.style.display="none";
+  modal.style.display =
+    "none";
 
 }
 
+
+/* ================= SAVE PRODUCT ================= */
 
 function saveProduct(){
 
-products.push({
+  const product = {
 
-name:pn.value || "Untitled Model",
+    id:
+      "product-" +
+      Date.now(),
 
-cat:pc.value || "Collectibles",
+    name:
+      pn.value ||
+      "Untitled Model",
 
-price:Number(pp.value) || 0,
+    cat:
+      pc.value ||
+      "Collectibles",
 
-currency:pm.value,
+    price:
+      Number(pp.value) || 0,
 
-stock:Number(ps.value) || 0,
+    currency:
+      pm.value,
 
-image:pi.value || ""
+    stock:
+      Number(ps.value) || 0,
 
-});
+    image:
+      pi.value || ""
 
-
-localStorage.setItem(
-"craftLayerProducts",
-JSON.stringify(products)
-);
+  };
 
 
-closeProduct();
+  products.push(
+    product
+  );
 
-renderAdmin();
 
-render();
+  localStorage.setItem(
+    "craftLayerProducts",
+    JSON.stringify(products)
+  );
+
+
+  pn.value = "";
+  pc.value = "";
+  pp.value = "";
+  ps.value = "";
+  pi.value = "";
+
+
+  closeProduct();
+
+  renderAdmin();
+
+  render();
 
 }
 
+
+/* ================= DELETE PRODUCT ================= */
 
 function delProduct(i){
 
-products.splice(i,1);
+  products.splice(
+    i,
+    1
+  );
 
 
-localStorage.setItem(
-"craftLayerProducts",
-JSON.stringify(products)
-);
+  localStorage.setItem(
+    "craftLayerProducts",
+    JSON.stringify(products)
+  );
 
 
-renderAdmin();
+  renderAdmin();
 
-render();
+  render();
 
 }
 
 
-/* START */
+/* ================= INITIALIZE ================= */
 
-document.getElementById("bag")
-.textContent=bag;
+document.getElementById(
+  "bag"
+).textContent = bag;
 
 render();
 
