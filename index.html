@@ -3413,6 +3413,8 @@ async function loadProductsFromSupabase(){
 }
 /* ================= EDIT PRODUCT ================= */
 
+/* ================= EDIT PRODUCT ================= */
+
 async function editProduct(i){
 
   const product = products[i];
@@ -3422,84 +3424,66 @@ async function editProduct(i){
     return;
   }
 
-
-  const newName =
-    prompt(
-      "Product name:",
-      product.name
-    );
+  const newName = prompt(
+    "Product name:",
+    product.name
+  );
 
   if(newName === null) return;
 
-
-  const newCategory =
-    prompt(
-      "Category:",
-      product.cat
-    );
+  const newCategory = prompt(
+    "Category:",
+    product.cat
+  );
 
   if(newCategory === null) return;
 
-
-  const newPrice =
-    prompt(
-      "Price:",
-      product.price
-    );
+  const newPrice = prompt(
+    "Price:",
+    product.price
+  );
 
   if(newPrice === null) return;
 
-
-  const newStock =
-    prompt(
-      "Stock:",
-      product.stock
-    );
+  const newStock = prompt(
+    "Stock:",
+    product.stock
+  );
 
   if(newStock === null) return;
 
-
-  const newImage =
-    prompt(
-      "Image URL:",
-      product.image || ""
-    );
+  const newImage = prompt(
+    "Image URL:",
+    product.image || ""
+  );
 
   if(newImage === null) return;
 
 
+  /* ================= UPDATE DATA ================= */
+
   const updatedProduct = {
 
-    name:
-      newName.trim() ||
-      product.name,
+    name: newName.trim() || product.name,
 
     category:
-      newCategory.trim() ||
-      product.cat,
+      newCategory.trim() || product.cat,
 
-    price:
-      Number(newPrice) || 0,
+    price: Number(newPrice),
 
-    stock:
-      Number(newStock) || 0,
+    stock: Number(newStock),
 
-    image_url:
-      newImage.trim()
+    image_url: newImage.trim()
 
   };
 
 
   /* ================= UPDATE SUPABASE ================= */
 
-  const { error } =
-    await supabaseClient
-      .from("products")
-      .update(updatedProduct)
-      .eq(
-        "id",
-        product.id
-      );
+  const { error } = await supabaseClient
+    .from("products")
+    .update(updatedProduct)
+    .eq("id", product.id);
 
 
   if(error){
@@ -3515,9 +3499,20 @@ async function editProduct(i){
     );
 
     return;
-
   }
 
+
+  /* ================= RELOAD ================= */
+
+  alert("Product updated successfully!");
+
+  await loadProductsFromSupabase();
+
+  renderAdmin("products");
+
+  render();
+
+}
 
   /* ================= RELOAD PRODUCTS ================= */
 
