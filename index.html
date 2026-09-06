@@ -1649,116 +1649,213 @@ section.charAt(0).toUpperCase()+
 section.slice(1)+
 " section coming next."
 );
-
+async function showAdminOrders(){
 }
 
 
 async function showAdminOrders(){
 
-const main =
-document.querySelector("#admin main");
+  const main = document.querySelector("#admin main");
 
+  main.innerHTML = `
+    <div class="admin-tools">
+      <div>
+        <small>MERCHANT CONSOLE</small>
+        <h1>Orders</h1>
+        <p style="opacity:.6">
+          Manage customer orders and update their status.
+        </p>
+      </div>
+    </div>
 
-main.innerHTML=`
+    <div id="ordersList">
+      <p>Loading orders...</p>
+    </div>
+  `;
 
-<div class="admin-tools">
+  const ordersList = document.getElementById("ordersList");
 
-<div>
+  const { data, error } = await supabaseClient
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending:false });
 
-<small>
-MERCHANT CONSOLE
-</small>
+  if(error){
 
-<h1>Orders</h1>
+    console.error("Orders error:", error);
 
-</div>
+    ordersList.innerHTML = `
+      <div class="stat">
+        <h3>❌ Could not load orders</h3>
+        <p>${error.message}</p>
+      </div>
+    `;
 
-</div>
+    return;
+  }
 
-<div id="ordersList">
-Loading orders...
-</div>
+  if(!data || data.length === 0){
 
-`;
+    ordersList.innerHTML = `
+      <div class="stat">
+        <h3>No orders yet</h3>
+        <p>Customer orders will appear here after checkout.</p>
+      </div>
+    `;
 
+    return;
+  }
 
-const {data,error} =
-await supabaseClient
-.from("orders")
-.select("*")
-.order(
-"created_at",
-{ascending:false}
-);
+  ordersList.innerHTML = data.map(order => {
 
+    const status = order.status || "Pending";
 
-if(error){
+    const date = order.created_at
+      ? new Date(order.created_at).toLocaleString("en-IN")
+      : "Unknown date";
 
-document.getElementById("ordersList")
-.innerHTML=
-"<p>Could not load orders.</p>";
+    return `
 
-console.error(error);
+      <div class="stat" style="
+        margin-bottom:18px;
+        padding:22px;
+      ">
 
-return;
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:15px;
+          flex-wrap:wrap;
+        ">
 
+          <div>
+            <small>ORDER</small>
+            <h3 style="margin:5px 0">
+              #${order.id}
+            </h3>
+
+            <small>
+              ${date}
+            </small>
+          </div>
+
+          <div>
+            <strong>
+              ₹${Number(order.total || 0).toLocaleString("en-IN")}
+            </strong>
+          </div>
+
+        </div>
+
+        <hr style="
+          margin:18px 0;
+          opacity:.15;
+        ">
+
+        <p>
+          <strong>Customer</strong><br>
+          ${order.customer_name || "Not provided"}
+        </p>
+
+        <p>
+          <strong>Email</strong><br>
+          ${order.customer_email || "Not provided"}
+        </p>
+
+        <p>
+          <strong>Phone</strong><br>
+          ${order.customer_phone || "Not provided"}
+        </p>
+
+        <p>
+          <strong>Shipping Address</strong><br>
+          ${order.shipping_address || "Not provided"}
+        </p>
+
+        <div style="
+          margin-top:18px;
+          display:flex;
+          align-items:center;
+          gap:12px;
+          flex-wrap:wrap;
+        ">
+
+          <strong>Order Status:</strong>
+
+          <select
+            onchange="updateOrderStatus('${order.id}', this.value)"
+            style="
+              padding:9px 12px;
+              border-radius:8px;
+              background:#111;
+              color:white;
+              border:1px solid #444;
+              cursor:pointer;
+            "
+          >
+
+            <option value="Pending"
+              ${status === "Pending" ? "selected" : ""}>
+              Pending
+            </option>
+
+            <option value="Confirmed"
+              ${status === "Confirmed" ? "selected" : ""}>
+              Confirmed
+            </option>
+
+            <option value="Shipped"
+              ${status === "Shipped" ? "selected" : ""}>
+              Shipped
+            </option>
+
+            <option value="Delivered"
+              ${status === "Delivered" ? "selected" : ""}>
+              Delivered
+            </option>
+
+            <option value="Cancelled"
+              ${status === "Cancelled" ? "selected" : ""}>
+              Cancelled
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
 }
 
 
-if(!data.length){
+async function updateOrderStatus(orderId, newStatus){
 
-document.getElementById("ordersList")
-.innerHTML=
-"<p>No orders yet.</p>";
+  const { error } = await supabaseClient
+    .from("orders")
+    .update({
+      status: newStatus
+    })
+    .eq("id", orderId);
 
-return;
+  if(error){
 
-}
+    console.error("Status update error:", error);
 
+    alert(
+      "❌ Could not update order status.\n\n" +
+      error.message
+    );
 
-document.getElementById("ordersList")
-.innerHTML=
+    return;
+  }
 
-data.map(order=>`
+  alert("✅ Order status updated!");
 
-<div
-class="stat"
-style="margin-bottom:15px">
-
-<strong>
-Order ${order.id}
-</strong>
-
-<p>
-Customer:
-${order.customer_name}
-</p>
-
-<p>
-Email:
-${order.customer_email}
-</p>
-
-<p>
-Address:
-${order.shipping_address}
-</p>
-
-<p>
-Total:
-₹${Number(order.total)
-.toLocaleString("en-IN")}
-</p>
-
-<p>
-Status:
-${order.status}
-</p>
-
-</div>
-
-`).join("");
-
+  showAdminOrders();
 }
 
 
