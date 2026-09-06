@@ -3411,7 +3411,123 @@ async function loadProductsFromSupabase(){
   }
 
 }
+/* ================= EDIT PRODUCT ================= */
 
+async function editProduct(i){
+
+  const product = products[i];
+
+  if(!product){
+    alert("Product not found.");
+    return;
+  }
+
+
+  const newName =
+    prompt(
+      "Product name:",
+      product.name
+    );
+
+  if(newName === null) return;
+
+
+  const newCategory =
+    prompt(
+      "Category:",
+      product.cat
+    );
+
+  if(newCategory === null) return;
+
+
+  const newPrice =
+    prompt(
+      "Price:",
+      product.price
+    );
+
+  if(newPrice === null) return;
+
+
+  const newStock =
+    prompt(
+      "Stock:",
+      product.stock
+    );
+
+  if(newStock === null) return;
+
+
+  const newImage =
+    prompt(
+      "Image URL:",
+      product.image || ""
+    );
+
+  if(newImage === null) return;
+
+
+  const updatedProduct = {
+
+    name:
+      newName.trim() ||
+      product.name,
+
+    category:
+      newCategory.trim() ||
+      product.cat,
+
+    price:
+      Number(newPrice) || 0,
+
+    stock:
+      Number(newStock) || 0,
+
+    image_url:
+      newImage.trim()
+
+  };
+
+
+  /* ================= UPDATE SUPABASE ================= */
+
+  const { error } =
+    await supabaseClient
+      .from("products")
+      .update(updatedProduct)
+      .eq(
+        "id",
+        product.id
+      );
+
+
+  if(error){
+
+    console.error(
+      "Product update error:",
+      error
+    );
+
+    alert(
+      "Could not update product.\n\n" +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  /* ================= RELOAD PRODUCTS ================= */
+
+  await loadProductsFromSupabase();
+
+  renderAdmin("products");
+
+  render();
+
+}
 /* ================= DELETE PRODUCT ================= */
 
 function delProduct(i){
