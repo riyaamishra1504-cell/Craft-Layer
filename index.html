@@ -2242,7 +2242,67 @@ async function placeOrder(event){
     return;
 
   }
+  /* ================= UPDATE INVENTORY ================= */
 
+  for(const item of cart){
+
+    const { data: product, error: productError } =
+      await supabaseClient
+        .from("products")
+        .select("stock")
+        .eq("id", item.id)
+        .single();
+
+
+    if(productError){
+
+      console.error(
+        "Inventory lookup error:",
+        productError
+      );
+
+      continue;
+
+    }
+
+
+    const currentStock =
+      Number(product.stock) || 0;
+
+    const quantityPurchased =
+      Number(item.quantity) || 0;
+
+    const newStock =
+      Math.max(
+        0,
+        currentStock - quantityPurchased
+      );
+
+
+    const { error: stockError } =
+      await supabaseClient
+        .from("products")
+        .update({
+          stock: newStock
+        })
+        .eq("id", item.id);
+
+
+    if(stockError){
+
+      console.error(
+        "Inventory update error:",
+        stockError
+      );
+
+    }
+
+  }
+
+
+  /* Reload products */
+
+  await loadProductsFromSupabase();
 
   localStorage.removeItem(
     "craftLayerCart"
