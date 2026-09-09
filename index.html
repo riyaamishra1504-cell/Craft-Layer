@@ -558,6 +558,12 @@ footer{
   <div class="nav-actions">
 
     <button
+  class="ghost"
+  onclick="showTrackOrder()">
+  Track Order
+</button>
+
+    <button
       class="ghost"
       onclick="openAdmin()">
       Admin
@@ -2469,7 +2475,161 @@ function scrollShop(){
 
 }
 
+/* ================= TRACK ORDER ================= */
 
+function showTrackOrder(){
+
+  const content =
+    document.getElementById(
+      "cartContent"
+    );
+
+  content.innerHTML = `
+
+    <h2>
+      Track Your Order
+    </h2>
+
+    <p>
+      Enter your Order ID and email to check
+      your order status.
+    </p>
+
+    <input
+      id="trackOrderId"
+      placeholder="Order ID"
+      style="width:100%;margin:10px 0;padding:12px"
+    >
+
+    <input
+      id="trackOrderEmail"
+      type="email"
+      placeholder="Email Address"
+      style="width:100%;margin:10px 0;padding:12px"
+    >
+
+    <button
+      class="pill"
+      onclick="trackOrder()">
+
+      Track Order
+
+    </button>
+
+    <div
+      id="trackingResult"
+      style="margin-top:25px">
+    </div>
+
+  `;
+
+  document.getElementById(
+    "cartPanel"
+  ).style.transform =
+    "translateX(0)";
+
+}
+
+/* ================= FIND ORDER ================= */
+
+async function trackOrder(){
+
+  const orderId =
+    document.getElementById(
+      "trackOrderId"
+    ).value.trim();
+
+  const email =
+    document.getElementById(
+      "trackOrderEmail"
+    ).value.trim();
+
+
+  if(!orderId || !email){
+
+    alert(
+      "Please enter your Order ID and email."
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    document.getElementById(
+      "trackingResult"
+    );
+
+  result.innerHTML =
+    "<p>Checking order...</p>";
+
+
+  const { data: order, error } =
+    await supabaseClient
+      .from("orders")
+      .select("*")
+      .eq("id", orderId)
+      .eq("customer_email", email)
+      .single();
+
+
+  if(error || !order){
+
+    result.innerHTML = `
+
+      <p>
+        ❌ Order not found.
+      </p>
+
+      <p>
+        Please check your Order ID and email.
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  result.innerHTML = `
+
+    <div class="stat">
+
+      <h3>
+        Order Found ✓
+      </h3>
+
+      <p>
+        <strong>Order ID:</strong>
+        ${order.id}
+      </p>
+
+      <p>
+        <strong>Total:</strong>
+        ₹${Number(order.total).toLocaleString("en-IN")}
+      </p>
+
+      <p>
+        <strong>Payment:</strong>
+        ${order.payment_method}
+      </p>
+
+      <h3 style="margin-top:20px">
+        Status
+      </h3>
+
+      <strong>
+        ${order.status || "Pending"}
+      </strong>
+
+    </div>
+
+  `;
+
+}  
+  
 /* ================= ADMIN SECTION ================= */
 
 function showAdminSection(section){
