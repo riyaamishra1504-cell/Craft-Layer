@@ -407,6 +407,58 @@ nav a{
 #trackingResult .stat strong{
   color:#111 !important;
 }
+.track-status{
+  margin-top:20px;
+}
+
+.track-steps{
+  display:flex;
+  justify-content:space-between;
+  position:relative;
+  margin-top:25px;
+}
+
+.track-step{
+  text-align:center;
+  flex:1;
+  position:relative;
+  z-index:1;
+}
+
+.track-dot{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#ddd;
+  color:#777;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:auto;
+  font-weight:700;
+}
+
+.track-step.active .track-dot{
+  background:var(--accent);
+  color:#080808;
+}
+
+.track-step.completed .track-dot{
+  background:#111;
+  color:#fff;
+}
+
+.track-label{
+  margin-top:8px;
+  font-size:12px;
+  color:#777;
+}
+
+.track-step.active .track-label,
+.track-step.completed .track-label{
+  color:#111;
+  font-weight:700;
+}
 .admin table{
   width:100%;
   border-collapse:collapse;
@@ -2675,14 +2727,91 @@ async function trackOrder(){
         ${order.payment_method}
       </p>
 
-      <h3 style="margin-top:20px">
-        Status
-      </h3>
+    <h3 style="margin-top:20px">
+  Order Status
+</h3>
 
-      <strong>
-        ${order.status || "Pending"}
-      </strong>
+<div class="track-status">
 
+  ${
+    order.status === "Cancelled"
+
+    ? `
+      <div style="
+        padding:15px;
+        border-radius:10px;
+        background:#ffe5e5;
+        color:#b00020;
+        font-weight:700;
+        text-align:center;
+      ">
+        ✕ Order Cancelled
+      </div>
+    `
+
+    : `
+      <div class="track-steps">
+
+        <div class="track-step ${
+          ["Pending","Confirmed","Shipped","Delivered"]
+          .includes(order.status || "Pending")
+          ? "active"
+          : ""
+        }">
+
+          <div class="track-dot">1</div>
+          <div class="track-label">
+            Placed
+          </div>
+
+        </div>
+
+        <div class="track-step ${
+          ["Confirmed","Shipped","Delivered"]
+          .includes(order.status)
+          ? "completed"
+          : ""
+        }">
+
+          <div class="track-dot">2</div>
+          <div class="track-label">
+            Confirmed
+          </div>
+
+        </div>
+
+        <div class="track-step ${
+          ["Shipped","Delivered"]
+          .includes(order.status)
+          ? "completed"
+          : ""
+        }">
+
+          <div class="track-dot">3</div>
+          <div class="track-label">
+            Shipped
+          </div>
+
+        </div>
+
+        <div class="track-step ${
+          order.status === "Delivered"
+          ? "completed"
+          : ""
+        }">
+
+          <div class="track-dot">4</div>
+          <div class="track-label">
+            Delivered
+          </div>
+
+        </div>
+
+      </div>
+    `
+  }
+
+</div>
     </div>
 
   `;
