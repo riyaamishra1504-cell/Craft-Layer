@@ -2267,21 +2267,39 @@ function copyOrderId(){
       "customerOrderId"
     ).textContent.trim();
 
-  navigator.clipboard.writeText(orderId)
-    .then(() => {
+  const textArea =
+    document.createElement("textarea");
 
-      alert(
-        "Order ID copied successfully!"
-      );
+  textArea.value = orderId;
 
-    })
-    .catch(() => {
+  document.body.appendChild(textArea);
 
-      alert(
-        "Could not copy Order ID. Please copy it manually."
-      );
+  textArea.select();
 
-    });
+  try{
+
+    document.execCommand("copy");
+
+    alert(
+      "Order ID copied successfully!"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Copy error:",
+      error
+    );
+
+    alert(
+      "Could not copy Order ID. Please copy it manually."
+    );
+
+  }
+
+  document.body.removeChild(
+    textArea
+  );
 }
   
   /* ================= LIVE STOCK CHECK ================= */
