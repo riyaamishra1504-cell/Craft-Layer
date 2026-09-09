@@ -2251,7 +2251,55 @@ async function placeOrder(event){
       total
 
   };
+  /* ================= LIVE STOCK CHECK ================= */
 
+  for(const item of cart){
+
+    const { data: product, error: stockCheckError } =
+      await supabaseClient
+        .from("products")
+        .select("name, stock")
+        .eq("id", item.id)
+        .single();
+
+
+    if(stockCheckError){
+
+      console.error(
+        "Stock check error:",
+        stockCheckError
+      );
+
+      alert(
+        "Could not verify product stock.\n\n" +
+        stockCheckError.message
+      );
+
+      return;
+
+    }
+
+
+    const availableStock =
+      Number(product.stock) || 0;
+
+    const requestedQuantity =
+      Number(item.quantity) || 0;
+
+
+    if(
+      requestedQuantity > availableStock
+    ){
+
+      alert(
+        `${product.name} has only ${availableStock} item(s) left in stock.`
+      );
+
+      return;
+
+    }
+
+  }
 
   const { error } =
     await supabaseClient
