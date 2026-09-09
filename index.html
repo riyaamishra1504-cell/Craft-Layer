@@ -1632,7 +1632,39 @@ function changeQty(id,change){
     return;
 
 
-  item.quantity += change;
+  /* ================= CHECK STOCK ================= */
+
+  const product =
+    products.find(
+      product =>
+        product.id === id
+    );
+
+
+  if(!product)
+    return;
+
+
+  const newQuantity =
+    item.quantity + change;
+
+
+  if(
+    change > 0 &&
+    newQuantity > product.stock
+  ){
+
+    alert(
+      `Only ${product.stock} item(s) available in stock.`
+    );
+
+    return;
+
+  }
+
+
+  item.quantity =
+    newQuantity;
 
 
   if(item.quantity <= 0){
