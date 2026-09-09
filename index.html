@@ -2258,49 +2258,7 @@ async function placeOrder(event){
 
   };
 
-/* ================= COPY ORDER ID ================= */
 
-function copyOrderId(){
-
-  const orderId =
-    document.getElementById(
-      "customerOrderId"
-    ).textContent.trim();
-
-  const textArea =
-    document.createElement("textarea");
-
-  textArea.value = orderId;
-
-  document.body.appendChild(textArea);
-
-  textArea.select();
-
-  try{
-
-    document.execCommand("copy");
-
-    alert(
-      "Order ID copied successfully!"
-    );
-
-  }catch(error){
-
-    console.error(
-      "Copy error:",
-      error
-    );
-
-    alert(
-      "Could not copy Order ID. Please copy it manually."
-    );
-
-  }
-
-  document.body.removeChild(
-    textArea
-  );
-}
   
   /* ================= LIVE STOCK CHECK ================= */
 
@@ -2504,7 +2462,50 @@ function copyOrderId(){
 
 }
 
+/* ================= COPY ORDER ID ================= */
 
+function copyOrderId(){
+
+  const orderId =
+    document.getElementById(
+      "customerOrderId"
+    ).textContent.trim();
+
+  const textArea =
+    document.createElement("textarea");
+
+  textArea.value = orderId;
+
+  document.body.appendChild(textArea);
+
+  textArea.select();
+
+  try{
+
+    document.execCommand("copy");
+
+    alert(
+      "Order ID copied successfully!"
+    );
+
+  }catch(error){
+
+    console.error(
+      "Copy error:",
+      error
+    );
+
+    alert(
+      "Could not copy Order ID. Please copy it manually."
+    );
+
+  }
+
+  document.body.removeChild(
+    textArea
+  );
+}
+  
 /* ================= CLOSE CART ================= */
 
 function closeCart(){
