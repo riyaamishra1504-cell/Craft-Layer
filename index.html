@@ -3315,13 +3315,46 @@ async function showAdminOrders(){
 }
 
 
-/* ================= UPDATE ORDER STATUS ================= */
+
 /* ================= UPDATE ORDER STATUS ================= */
 
 async function updateOrderStatus(
   orderId,
   newStatus
 ){
+
+  /* Get current order */
+
+  const { data: order, error: orderError } =
+    await supabaseClient
+      .from("orders")
+      .select("status, items")
+      .eq("id", orderId)
+      .single();
+
+
+  if(orderError){
+
+    console.error(
+      "Order lookup error:",
+      orderError
+    );
+
+    alert(
+      "Could not find order.\n\n" +
+      orderError.message
+    );
+
+    return;
+
+  }
+
+
+  const oldStatus =
+    order.status;
+
+
+  /* ================= UPDATE ORDER ================= */
 
   const { error } =
     await supabaseClient
@@ -3342,7 +3375,6 @@ async function updateOrderStatus(
       error
     );
 
-
     alert(
       "Could not update order status.\n\n" +
       error.message
@@ -3351,6 +3383,108 @@ async function updateOrderStatus(
     return;
 
   }
+
+
+  /* ================= RESTORE STOCK ON CANCELLATION ================= */
+
+  if(
+    newStatus === "Cancelled" &&
+    oldStatus !== "Cancelled"
+  ){
+
+    let items = order.items;
+
+
+    /* Convert JSON string if necessary */
+
+    if(typeof items === "string"){
+
+      try{
+
+        items =
+          JSON.parse(items);
+
+      }catch(error){
+
+        console.error(
+          "Could not read order items:",
+          error
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    if(Array.isArray(items)){
+
+      for(const item of items){
+
+        const { data: product, error: productError } =
+          await supabaseClient
+            .from("products")
+            .select("stock")
+            .eq("id", item.id)
+            .single();
+
+
+        if(productError){
+
+          console.error(
+            "Product lookup error:",
+            productError
+          );
+
+          continue;
+
+        }
+
+
+        const currentStock =
+          Number(product.stock) || 0;
+
+        const orderedQuantity =
+          Number(item.quantity) || 0;
+
+
+        const restoredStock =
+          currentStock +
+          orderedQuantity;
+
+
+        const { error: stockError } =
+          await supabaseClient
+            .from("products")
+            .update({
+              stock: restoredStock
+            })
+            .eq(
+              "id",
+              item.id
+            );
+
+
+        if(stockError){
+
+          console.error(
+            "Stock restore error:",
+            stockError
+          );
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  /* Reload products */
+
+  await loadProductsFromSupabase();
 
 
   showAdminOrders();
