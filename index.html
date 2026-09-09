@@ -2257,6 +2257,33 @@ async function placeOrder(event){
       total
 
   };
+
+/* ================= COPY ORDER ID ================= */
+
+function copyOrderId(){
+
+  const orderId =
+    document.getElementById(
+      "customerOrderId"
+    ).textContent.trim();
+
+  navigator.clipboard.writeText(orderId)
+    .then(() => {
+
+      alert(
+        "Order ID copied successfully!"
+      );
+
+    })
+    .catch(() => {
+
+      alert(
+        "Could not copy Order ID. Please copy it manually."
+      );
+
+    });
+}
+  
   /* ================= LIVE STOCK CHECK ================= */
 
   for(const item of cart){
@@ -2419,12 +2446,21 @@ async function placeOrder(event){
       Order Placed 🎉
     </h2>
 
-    <p>
-      Order ID:
-      <strong>
-        ${order.id}
-      </strong>
-    </p>
+   <p>
+  Order ID:
+  <strong id="customerOrderId">
+    ${order.id}
+  </strong>
+</p>
+
+<button
+  class="ghost"
+  onclick="copyOrderId()"
+  style="margin-top:10px">
+
+  Copy Order ID
+
+</button>
 
     <p>
       Thank you,
